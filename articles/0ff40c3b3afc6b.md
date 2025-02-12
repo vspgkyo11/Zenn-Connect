@@ -1,11 +1,10 @@
 ---
-title: ""
-emoji: "🎉"
+title: "Pythonで「freee人事労務」に自動ログインして勤怠入力を自動化する"
+emoji: "🏢"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: []
+topics: ["python"]
 published: false
 ---
-# 🏢 Pythonで「freee人事労務」に自動ログインして勤怠入力を自動化する
 
 ## はじめに
 
@@ -38,7 +37,7 @@ Seleniumを使用するには、ブラウザドライバ（ChromeDriver）が必
 
 `.env` ファイル（スクリプトと同じディレクトリに作成）:
 
-```sh
+```sh:.env
 FREEE_EMAIL=your_email@example.com
 FREEE_PASSWORD=your_password
 ```
@@ -47,7 +46,7 @@ FREEE_PASSWORD=your_password
 
 以下のスクリプトは、freee人事労務のログインページにアクセスし、ユーザー情報を入力してログイン後、勤怠入力を自動化する例です。
 
-```python
+```python:python-auto.py
 import os
 from dotenv import load_dotenv
 from selenium import webdriver
@@ -129,7 +128,7 @@ finally:
 スクリプトを実行するには、以下のコマンドを入力します。
 
 ```sh
-python freee-auto-registration.py 09:00 18:00 13:00 14:00 01 2025/03/01 "オフィス名"
+$ python freee-auto-registration.py 09:00 18:00 13:00 14:00 01 2025/03/01 "オフィス名"
 ```
 
 ## 引数の説明
@@ -141,7 +140,7 @@ python freee-auto-registration.py 09:00 18:00 13:00 14:00 01 2025/03/01 "オフ�
 5. **勤務タグ** (workingTag)
    - `01`: 出社
    - `02`: 出張
-6. **追加する日付** → `2025/03/01`
+6. **追加する日付** (workingDate) → `2025/03/01`
 7. **メモ** (workingMemo)
    - `"オフィス名"` (無記述の場合は `""`)
 
