@@ -62,8 +62,229 @@ FREEE_PASSWORD=your_password
 
 以下のスクリプトは、freee人事労務のログインページにアクセスし、ユーザー情報を入力してログイン後、勤怠入力を自動化する例です。
 
-```python:python-auto.py
+```python:freee-auto-registration.py
+from selenium import webdriver
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from time import sleep
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+import sys
+import os
+import traceback
+from dotenv import load_dotenv
 
+# ChromeOptionsのインスタンスを作成
+chrome_options = Options()
+chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+
+# .envファイルの読み込み
+load_dotenv()
+
+# 要 初期設定
+# Freee 人事労務
+url = "https://p.secure.freee.co.jp/"
+# url = "https://accounts.secure.freee.co.jp/"
+
+# 環境変数からログイン情報を取得
+EMAIL = os.getenv("FREEE_EMAIL")
+PASSWORD = os.getenv("FREEE_PASSWORD")
+
+# コマンドライン引数から取得
+if len(sys.argv) < 8:
+    print("引数が足りません")
+    sys.exit(1)
+
+starting_time = sys.argv[1]
+ending_time = sys.argv[2]
+break_start = sys.argv[3]
+break_end = sys.argv[4]
+working_tag = sys.argv[5]
+working_date = sys.argv[6]
+working_memo = sys.argv[7]
+
+# "HH:mm" → "HH"（時）, "mm"（分）分割
+starting_hour, starting_minute = starting_time.split(":")  # "09:30" → ["09", "30"]
+ending_hour, ending_minute = ending_time.split(":")  # "19:30" → ["19", "30"]
+break_start_hour, break_start_minute = break_start.split(":")  # "13:00" → ["13", "00"]
+break_end_hour, break_end_minute = break_end.split(":")  # "14:00" → ["14", "00"]
+
+# 勤怠タグの選択
+if working_tag == "01":
+    working_type = "出社"
+elif working_tag == "02":
+    working_type = "出張"
+elif working_tag == "03":
+    working_type = "出社,出張"
+
+try:
+    # ユーザーに実行確認
+    val = input('[Attention]free-auto-registration.py を実行しますか' + ', y or n ?')
+    if val == 'y':
+
+        # WebDriverのセットアップ
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+
+        # freee 人事労務
+        driver.get(url)
+
+        # メールアドレス入力
+        email_input = driver.find_element(By.XPATH, '//*[@id="loginIdField"]')
+
+        email_input.send_keys(EMAIL)
+        
+        # パスワード入力
+        password_input = driver.find_element(By.XPATH, '//*[@id="passwordField"]')
+        
+        password_input.send_keys(PASSWORD)
+        password_input.send_keys(Keys.RETURN)
+        print("[完了]ログイン")
+
+        sleep(2)
+        
+        # "勤怠"タブを押下
+        driver.find_element(By.XPATH, '//*[@id="gn-navigation-menu"]/nav/div/ul/li[3]/a/div[1]/div[2]/span/span').click()
+
+        sleep(2)
+        print("[完了]勤怠タブ")
+        sleep(3)
+        
+        print(f"{working_date} の登録を開始します")
+
+        # sleep(5)
+        date_xpath = f'//td[@data-date="{working_date}"]'
+        date_element = driver.find_element(By.XPATH, date_xpath)
+        date_element.click()
+        
+        # ---勤怠時間----------------------------------------
+        # 勤怠時間-開始(HH)を入力
+        starting_hour_input = driver.find_element(By.XPATH, '//*[@id="clock_in_hour"]')
+        starting_hour_input.clear()
+        starting_hour_input.send_keys(starting_hour)
+
+        # 勤怠時間-開始(mm)を入力
+        starting_minute_input = driver.find_element(By.XPATH, '//*[@id="clock_in_minute"]')
+        starting_minute_input.clear()
+        starting_minute_input.send_keys(starting_minute)
+
+        # 勤務時間-終了(HH)を入力
+        ending_hour_input = driver.find_elements(By.ID, "clock_in_hour")[1] 
+        ending_hour_input.clear()
+        ending_hour_input.send_keys(ending_hour)
+
+        # 勤怠時間-終了(mm)を入力
+        ending_minute_input = driver.find_elements(By.ID, "clock_in_minute")[1] 
+        ending_minute_input.clear()
+        ending_minute_input.send_keys(ending_minute)
+        
+        print("[完了]勤務時間："+ starting_hour + ":" + starting_minute + " ~ " + ending_hour + ":" + ending_minute) 
+
+        # ---休憩時間----------------------------------------
+        # 休憩時間-開始(HH)を入力
+        break_starting_hour_input = driver.find_element(By.XPATH, '//*[@id="clock_out_hour"]')
+        break_starting_hour_input.clear()
+        break_starting_hour_input.send_keys(break_start_hour)
+
+        # 休憩時間-開始(mm)を入力
+        break_starting_minute_input = driver.find_element(By.XPATH, '//*[@id="clock_out_minute"]')
+        break_starting_minute_input.clear()
+        break_starting_minute_input.send_keys(break_start_minute)
+
+        # 休憩時間-終了(HH)を入力
+        break_ending_hour_input = driver.find_elements(By.ID, "clock_in_hour")[2] 
+        break_ending_hour_input.clear()
+        break_ending_hour_input.send_keys(break_end_hour)
+
+        # 休憩時間-終了(mm)を入力
+        break_ending_minute_input = driver.find_elements(By.ID, "clock_in_minute")[2] 
+        break_ending_minute_input.clear()
+        break_ending_minute_input.send_keys(break_end_minute)
+
+        print("[完了]休憩時間："+ break_start_hour + ":" + break_start_minute + " ~ " + break_end_hour + ":" + break_end_minute)
+        
+        # ---勤怠タグ----------------------------------------
+        print("勤怠タグの処理を開始")
+        
+        # 勤怠タグ追加ボタン押下
+        add_tag_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="追加" and @aria-controls="vb-withPopup_43__popup"]'))
+        )
+        add_tag_button.click()
+        print("勤怠タグの追加ボタンをクリックしました。")
+        # ポップアップが表示されるまで待機
+                
+        # ポップアップが表示されるまで待機
+        popup = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "vb-withPopup_43__popup"))
+        )
+
+        sleep(2)
+        print("ポップアップが表示されました。")
+
+        # 出社・出張のチェックボックスの XPath を定義
+        checkbox_xpath = ""
+        if working_tag == "01":  # 出社のみ
+            checkbox_xpath = '//span[contains(text(), "出社")]/preceding-sibling::input[@type="checkbox"]'
+        elif working_tag == "02":  # 出張のみ
+            checkbox_xpath = '//span[contains(text(), "出張")]/preceding-sibling::input[@type="checkbox"]'
+        elif working_tag == "03":  # 出社と出張の両方
+            checkbox_xpath = [
+                '//span[contains(text(), "出社")]/preceding-sibling::input[@type="checkbox"]',
+                '//span[contains(text(), "出張")]/preceding-sibling::input[@type="checkbox"]'
+            ]
+
+        # チェックボックスをクリック
+        if isinstance(checkbox_xpath, list):  # 出社と出張の両方をチェックする場合
+            for xpath in checkbox_xpath:
+                checkbox = WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH, xpath))
+                )
+                driver.execute_script("arguments[0].click();", checkbox)  # JavaScriptでクリック
+                print(f"チェックボックス {xpath} を選択しました。")
+        else:
+            checkbox = WebDriverWait(driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, checkbox_xpath))
+            )
+            driver.execute_script("arguments[0].click();", checkbox)  # JavaScriptでクリック
+            print(f"チェックボックス {checkbox_xpath} を選択しました。")
+        print("[完了]勤怠タグ設定：" + working_type)
+        
+        # ---勤怠メモ----------------------------------------
+        print("[開始]勤怠メモの処理")
+
+        memo_input = driver.find_element(By.ID, "note")
+        memo_input.clear()
+        memo_input.send_keys(working_memo)
+        print("[完了]勤怠メモ：" + working_memo)
+        
+        # ---保存ボタン----------------------------------------
+        save_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "vb-button--appearancePrimary")]//span[contains(text(), "保存")]'))
+        )
+        save_button.click()
+        print("[完了]勤怠情報登録処理")
+
+        sleep(2)
+
+        # ブラウザを閉じる
+        driver.quit()
+
+        print('[finished]')
+
+    if val == 'n':
+        print('[cancel]')
+
+except Exception as e:
+    print("ERROR:", e)
+    traceback.print_exc()
+    
+finally:
+    driver.quit()
 
 ```
 
@@ -72,8 +293,11 @@ FREEE_PASSWORD=your_password
 スクリプトを実行するには、以下のコマンドを入力します。
 
 ```sh
-$ python freee-auto-registration.py 09:00 18:00 13:00 14:00 01 2025/03/01 "オフィス名"
+$ python freee-auto-registration.py 09:00 18:00 12:00 13:00 01 2025/03/01 "オフィス"
 ```
+:::message
+引数が多いため、入力を簡略化できるような工夫（クリップボードのピン、ユーザー辞書やスニペットの登録、スクリプト改変など）をおすすめします。
+:::
 
 ### 引数の説明
 
@@ -109,11 +333,11 @@ $ python freee-auto-registration.py 09:00 18:00 13:00 14:00 01 2025/03/01 "オ�
 ## おわりに
 
 本記事では、PythonとSeleniumを用いて「freee人事労務」に自動ログインし、勤怠入力を行う方法を解説しました。
-勤怠登録は毎日のルーティンですが、手作業では意外と手間がかかります。このスクリプトが、その負担を軽減する一助となれば幸いです。
+勤怠登録は毎日のルーティンですが、手作業では少々手間がかかります。このスクリプトが、その負担を軽減する一助となれば幸いです。
 
 ただし、一番大切なのは目視で最終確認を行うことです。自動化に頼りすぎると、思わぬミスにつながる可能性がありますので特にご注意ください！
 
-また、勤怠管理は会社全体の運用にも関わるため、人事労務担当者に迷惑をかけないよう注意しながら適切に活用していただければ幸いです。
+そして、勤怠管理は会社全体の運用にも関わるため、人事労務担当者に迷惑をかけないよう注意しながら適切に活用していただければ幸いです。
 
 ---
 
