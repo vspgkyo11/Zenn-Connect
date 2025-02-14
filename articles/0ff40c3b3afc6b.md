@@ -11,7 +11,7 @@ published: true
 「freee人事労務」を日常的に使用している方の中には、毎日の勤怠入力を自動化したいと考えている人もいるでしょう。本記事では、Pythonを用いて「freee人事労務」に自動ログインし、勤怠入力を自動化する方法について解説します。
 
 ::: message alert 
-一般的にWebサービスをスクレイピングする場合、利用規約にスクレイピングの可否が記載されています。事前に規約を確認し、適切な方法で自動化を行いましょう。
+一般的にWebサービスをスクレイピングする場合、利用規約にスクレイピングの可否が記載されています。事前に規約を確認し、適切な方法で自動化を行ってください。
 :::
 
 ## 使用する技術
@@ -123,7 +123,7 @@ elif working_tag == "03":
 
 try:
     # ユーザーに実行確認
-    val = input('[Attention]free-auto-registration.py を実行しますか' + ', y or n ?')
+    val = input('[確認]勤怠登録を開始しますか' + ', y or n ?')
     if val == 'y':
 
         # WebDriverのセットアップ
@@ -154,7 +154,7 @@ try:
         print("[完了]勤怠タブ")
         sleep(3)
         
-        print(f"{working_date} の登録を開始します")
+        print(f"{working_date} 分 登録開始")
 
         # sleep(5)
         date_xpath = f'//td[@data-date="{working_date}"]'
@@ -208,23 +208,19 @@ try:
         print("[完了]休憩時間："+ break_start_hour + ":" + break_start_minute + " ~ " + break_end_hour + ":" + break_end_minute)
         
         # ---勤怠タグ----------------------------------------
-        print("勤怠タグの処理を開始")
         
         # 勤怠タグ追加ボタン押下
         add_tag_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="追加" and @aria-controls="vb-withPopup_43__popup"]'))
         )
         add_tag_button.click()
-        print("勤怠タグの追加ボタンをクリックしました。")
         
         # ポップアップが表示されるまで待機
         popup = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "vb-withPopup_43__popup"))
         )
-
         sleep(2)
-        print("ポップアップが表示されました。")
-
+        
         # 出社・出張のチェックボックスの XPath を定義
         checkbox_xpath = ""
         if working_tag == "01":  # 出社のみ
@@ -244,18 +240,15 @@ try:
                     EC.element_to_be_clickable((By.XPATH, xpath))
                 )
                 driver.execute_script("arguments[0].click();", checkbox)  # JavaScriptでクリック
-                print(f"チェックボックス {xpath} を選択しました。")
+                
         else:
             checkbox = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, checkbox_xpath))
             )
             driver.execute_script("arguments[0].click();", checkbox)  # JavaScriptでクリック
-            print(f"チェックボックス {checkbox_xpath} を選択しました。")
-        print("[完了]勤怠タグ設定：" + working_type)
+            
         
         # ---勤怠メモ----------------------------------------
-        print("[開始]勤怠メモの処理")
-
         memo_input = driver.find_element(By.ID, "note")
         memo_input.clear()
         memo_input.send_keys(working_memo)
@@ -266,17 +259,17 @@ try:
             EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "vb-button--appearancePrimary")]//span[contains(text(), "保存")]'))
         )
         save_button.click()
-        print("[完了]勤怠情報登録処理")
+        print("[完了]勤怠登録")
 
         sleep(2)
 
         # ブラウザを閉じる
         driver.quit()
 
-        print('[finished]')
+        print('[終了]')
 
     if val == 'n':
-        print('[cancel]')
+        print('[中止]')
 
 except Exception as e:
     print("ERROR:", e)
