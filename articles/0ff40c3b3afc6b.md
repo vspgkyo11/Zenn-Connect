@@ -108,10 +108,10 @@ working_date = sys.argv[6]
 working_memo = sys.argv[7]
 
 # "HH:mm" → "HH"（時）, "mm"（分）分割
-starting_hour, starting_minute = starting_time.split(":")  # "09:30" → ["09", "30"]
-ending_hour, ending_minute = ending_time.split(":")  # "19:30" → ["19", "30"]
-break_start_hour, break_start_minute = break_start.split(":")  # "13:00" → ["13", "00"]
-break_end_hour, break_end_minute = break_end.split(":")  # "14:00" → ["14", "00"]
+starting_hour, starting_minute = starting_time.split(":")  # "09:00" → ["09", "00"]
+ending_hour, ending_minute = ending_time.split(":")  # "18:00" → ["18", "00"]
+break_start_hour, break_start_minute = break_start.split(":")  # "12:00" → ["12", "00"]
+break_end_hour, break_end_minute = break_end.split(":")  # "13:00" → ["13", "00"]
 
 # 勤怠タグの選択
 if working_tag == "01":
@@ -130,7 +130,7 @@ try:
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=chrome_options)
 
-        # freee 人事労務
+        # freee人事労務
         driver.get(url)
 
         # メールアドレス入力
@@ -216,8 +216,7 @@ try:
         )
         add_tag_button.click()
         print("勤怠タグの追加ボタンをクリックしました。")
-        # ポップアップが表示されるまで待機
-                
+        
         # ポップアップが表示されるまで待機
         popup = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.ID, "vb-withPopup_43__popup"))
