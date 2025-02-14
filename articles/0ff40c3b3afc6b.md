@@ -3,7 +3,7 @@ title: "【Python】日々の「freee人事労務」の勤怠登録を自動入�
 emoji: "🏢"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["python"]
-published: false
+published: true
 ---
 
 ## はじめに
