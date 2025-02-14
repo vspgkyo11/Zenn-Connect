@@ -10,6 +10,10 @@ published: false
 
 「freee人事労務」を日常的に使用している方の中には、毎日の勤怠入力を自動化したいと考えている人もいるでしょう。本記事では、Pythonを用いて「freee人事労務」に自動ログインし、勤怠入力を自動化する方法について解説します。
 
+::: message alert 
+一般的にWebサービスをスクレイピングする場合、利用規約にスクレイピングの可否が記載されています。事前に規約を確認し、適切な方法で自動化を行いましょう。
+:::
+
 ## 使用する技術
 
 - **Python**: 自動化スクリプトを作成
@@ -18,24 +22,36 @@ published: false
 
 ## 準備
 
-### 1. 必要なライブラリのインストール
+### 1. Python のインストール
 
-以下のコマンドを実行して、必要なライブラリをインストールします。
+本スクリプトを実行するためには Python が必要です。以下の公式サイトから Python をダウンロードし、インストールしてください。
+
+🔗 [Python公式サイト](https://www.python.org/downloads/)
+
+インストール後、ターミナルまたはコマンドプロンプトで以下のコマンドを実行し、Python が正しくインストールされているか確認します。
 
 ```sh
-pip install selenium webdriver-manager python-dotenv
+$ python --version
 ```
 
-### 2. ChromeDriverのセットアップ
+### 2. Chrome のインストール
 
-Seleniumを使用するには、ブラウザドライバ（ChromeDriver）が必要です。
-`webdriver-manager` を利用することで、手動でダウンロードせずに管理できます。
+本スクリプトでは Google Chrome を使用します。事前に Chrome をインストールしておいてください。
 
-### 3. `.env` ファイルの作成
+
+### 3. ライブラリのインストール
+
+以下のコマンドで必要なライブラリをインストールしてください。
+
+```sh
+$ pip install selenium webdriver-manager python-dotenv
+```
+
+### 4. `.env` ファイルの作成
 
 ログイン情報を `.env` ファイルに記述し、セキュリティを向上させます。
 
-`.env` ファイル（スクリプトと同じディレクトリに作成）:
+#### `.env` ファイル（スクリプトと同じディレクトリに作成）
 
 ```sh:.env
 FREEE_EMAIL=your_email@example.com
@@ -47,80 +63,8 @@ FREEE_PASSWORD=your_password
 以下のスクリプトは、freee人事労務のログインページにアクセスし、ユーザー情報を入力してログイン後、勤怠入力を自動化する例です。
 
 ```python:python-auto.py
-import os
-from dotenv import load_dotenv
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-import time
-import sys
 
-# .envファイルの読み込み
-load_dotenv()
 
-# 環境変数からログイン情報を取得
-EMAIL = os.getenv("FREEE_EMAIL")
-PASSWORD = os.getenv("FREEE_PASSWORD")
-
-# コマンドライン引数の取得
-if len(sys.argv) < 8:
-    print("引数が足りません")
-    sys.exit(1)
-
-starting_time = sys.argv[1]
-ending_time = sys.argv[2]
-break_start = sys.argv[3]
-break_end = sys.argv[4]
-working_tag = sys.argv[5]
-working_date = sys.argv[6]
-working_memo = sys.argv[7] 
-
-# WebDriverのセットアップ
-options = Options()
-options.add_argument("--headless")  # GUIなしで実行（不要なら削除）
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
-try:
-    # freee人事労務のログインページにアクセス
-    driver.get("https://accounts.secure.freee.co.jp/login")
-    time.sleep(2)
-    
-    # メールアドレス入力
-    email_input = driver.find_element(By.NAME, "email")
-    email_input.send_keys(EMAIL)
-    
-    # パスワード入力
-    password_input = driver.find_element(By.NAME, "password")
-    password_input.send_keys(PASSWORD)
-    password_input.send_keys(Keys.RETURN)
-    
-    time.sleep(5)  # ログイン待機
-    
-    # 勤怠管理ページに移動
-    driver.get("https://attendance.freee.co.jp/home")
-    time.sleep(3)
-    
-    print("勤怠情報の登録処理を開始")
-    
-    # 指定された日付のコンテナをクリック
-    date_element = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, f'//td[@data-date="{working_date}"]'))
-    )
-    date_element.click()
-    print(f"{working_date} のコンテナをクリックしました。")
-    
-    print("[完了]勤怠情報の登録処理")
-    
-except Exception as e:
-    print("エラーが発生しました:", e)
-    
-finally:
-    driver.quit()
 ```
 
 ## 実行方法
@@ -131,29 +75,45 @@ finally:
 $ python freee-auto-registration.py 09:00 18:00 13:00 14:00 01 2025/03/01 "オフィス名"
 ```
 
-## 引数の説明
+### 引数の説明
 
-1. **勤務時間-開始** (starting) → `09:00`
-2. **勤務時間-終了** (ending) → `18:00`
-3. **休憩時間-開始** → `13:00`
-4. **休憩時間-終了** → `14:00`
-5. **勤務タグ** (workingTag)
+1. **勤務時間-開始** (starting_time) → `09:00`
+2. **勤務時間-終了** (ending_time) → `18:00`
+3. **休憩時間-開始** (break_starting_time) → `12:00`
+4. **休憩時間-終了** (break_ending_time)→ `13:00`
+5. **勤務タグ** (working_tag)
+   - `00`: 登録なし
    - `01`: 出社
    - `02`: 出張
-6. **追加する日付** (workingDate) → `2025/03/01`
-7. **メモ** (workingMemo)
-   - `"オフィス名"` (無記述の場合は `""`)
+   - `03`: 出社+出張
+6. **追加する日付** (working_date) → `2025/03/01`
+7. **メモ** (working_memo)
+   - `"オフィス名 など"` (無記述の場合は `""`)
+
+
+:::message
+**[Tips] Terminal 操作**
+- `Ctrl + ← / →` ： 単語ごとにカーソルを移動でき、長いコマンドの編集時に便利
+- `Ctrl + A / Ctrl + E` ： コマンドの先頭や末尾に一発で移動
+- `Ctrl + U / Ctrl + K` ： カーソル位置より前後のテキストを削除
+- `Ctrl + R` ： コマンド履歴を検索（過去に実行したコマンドを素早く呼び出せる）
+:::
 
 ## 注意点
 
 - 本スクリプトは自動操作を行うため、freeeの仕様変更により動作しなくなる可能性があります。
 - ログイン情報は `.env` ファイルに保存し、スクリプト内に直接記述しないようにしましょう。
 - `.env` ファイルを `.gitignore` に追加し、バージョン管理に含めないようにしましょう。
-- `--headless` オプションを削除すると、ブラウザが開いた状態で動作します。
 
-## まとめ
 
-本記事では、PythonとSeleniumを用いて「freee人事労務」に自動ログインし、勤怠入力を行う方法を解説しました。毎日の作業を少しでも楽にするために、ぜひ試してみてください！
+## おわりに
+
+本記事では、PythonとSeleniumを用いて「freee人事労務」に自動ログインし、勤怠入力を行う方法を解説しました。
+勤怠登録は毎日のルーティンですが、手作業では意外と手間がかかります。このスクリプトが、その負担を軽減する一助となれば幸いです。
+
+ただし、一番大切なのは目視で最終確認を行うことです。自動化に頼りすぎると、思わぬミスにつながる可能性がありますので特にご注意ください！
+
+また、勤怠管理は会社全体の運用にも関わるため、人事労務担当者に迷惑をかけないよう注意しながら適切に活用していただければ幸いです。
 
 ---
 
