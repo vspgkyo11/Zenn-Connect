@@ -1,5 +1,5 @@
 ---
-title: "Pythonで「freee人事労務」に自動ログインして勤怠入力を自動化する"
+title: "【Python】日々の「freee人事労務」勤怠入力を自動入力する"
 emoji: "🏢"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["python"]
