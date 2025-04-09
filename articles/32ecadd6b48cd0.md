@@ -3,7 +3,7 @@ title: "【ポート競合】開発環境でよくある接続エラー"
 emoji: "🚧"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Docker","DB","ERROR"]
-published: false
+published: true
 ---
 
 ## はじめに
@@ -26,7 +26,7 @@ published: false
 
 例：DockerでMariaDBを起動しようとしたが、ローカルのMySQLがポート3306を占有していたため、起動に失敗。
 
-## ポート別：競合時に起きる症状とその背景
+## ポート別：競合時に起きる症状とその原因
 
 ### ポート3306（MySQL / MariaDB）
 - **よくある用途**：MySQL / MariaDB サーバー
@@ -67,8 +67,13 @@ published: false
    ```bash
    lsof -i :<ポート番号>
    ```
-2. macOSなら `brew services list` で自動起動サービスを確認
-3. Dockerとローカルのサービスを明確に分離管理する
+2. 別のポート番号を使うか、競合しているプロセスを終了する
+3. DockerやKubernetesを使っている場合は、設定を見直す
+
+
+:::message 
+macOSなら `brew services list` コマンドで自動起動サービスを確認するのもおすすめです。
+:::
 
 ## おわりに
 
