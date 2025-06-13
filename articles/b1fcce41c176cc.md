@@ -12,9 +12,9 @@ Laravel Webアプリケーション開発を進めていて、CSSやJavaScript�
 特に、`public/`ディレクトリに置いてよいファイルや`resources/`ディレクトリに置くべきファイルなど、安全性や保守性の観点から正しい構成を知ることはとても大切です。この記事では、Laravelの静的ファイルの配置に関する方針を紹介します。
 
 ## 対象者
-* CSSやJSを`public/`に直接置いてしまっているエンジニア
+* CSSやJSファイルを`public/`に直接置いてしまっているエンジニア
 * チーム開発をしている方
-* ViteやLaravel Mixのビルドに不安がある方
+* ViteやLaravel Mixのビルドを見直したい方
 
 ## Laravel ディレクトリ構成のおさらい
 
@@ -23,25 +23,27 @@ Laravelプロジェクトには以下のような役割があります。
 | ディレクトリ       | 役割                                                                   |
 | ------------ | -------------------------------------------------------------------- |
 | `resources/` | 開発用の素材置き場。SCSSやJSの元データをここに置く（開発者のみが扱う場所）                             |
-| `public/`    | コンパイル・バンドルされたCSSやJavaScript、HTMLテンプレートの出力先。Webサーバー経由で公開されるファイルを配置します |
+| `public/`    | コンパイル・バンドルされたCSSやJavaScript、HTMLテンプレートの出力先。**Webサーバー経由で公開されるファイル**を配置します |
 | `storage/`   | 一時的なファイルやログなど                                                        |
 | `vendor/`    | Composerパッケージ類                                                       |
 
 ## `public/`に様々なファイルを置いていませんか？
 
 * ソースが外部から見える：SCSSやモジュールバンドル（※複数のJSファイルや依存ライブラリを1つにまとめる処理）前のJSなど、本来見せるべきでない中間ファイルが公開されてしまう可能性があります
-* セキュリティ上のリスク：環境によっては`public/`配下に置いたファイルが意図せずアクセス可能になる場合があります
+* セキュリティリスク：環境によっては`public/`配下に置いたファイルが意図せずアクセス可能になる場合があります
 * メンテナンス困難：構成が分かりづらくなり、チーム開発時に混乱を招きます
 
-例えば、NPO団体であるOWASP(Open Worldwide Application Security Project)が指摘する「不適切なリソース管理（Insecure Resource Management）」に該当するケースもあり、SCSSやモジュールバンドル前のJSファイルが外部からアクセス可能になると、ソースコードの構造や使用ライブラリが漏れるリスクがあります。
+:::message alert
+**補足**
+これらのケースは、NPO団体であるOWASP(Open Worldwide Application Security Project)が指摘する「不適切なリソース管理（Insecure Resource Management）」に該当するケースもあり、SCSSやモジュールバンドル前のJSファイルが外部からアクセス可能になると、ソースコードの構造や使用ライブラリが漏れるリスクがあります。
+:::
 
-## Viteを使った正しい静的ファイル管理の流れ
+## 静的ファイル管理の流れ (Vite環境)
 
+Laravel 9以降ではViteがデフォルトビルドツールになりました。
 安全かつ効率的に静的ファイルを管理する方法として、現在のLaravelで標準となっているViteを使った構成は以下の通りです。
 
-Laravel 9以降ではViteがデフォルトビルドツールになりました。以下の手順が推奨されます。
-
-1. `resources/scss/`, `resources/js/`に素材を配置（例えば、CSSとJavaScriptの役割を明確に分けることで、保守性やチーム開発での可読性が向上します）
+1. `resources/scss/`, `resources/js/`に素材となるファイルを配置
 2. `vite.config.js`でビルド対象と出力先を指定（通常は`public/build/`）
 3. `npm run dev`または`npm run build`でビルド
 4. Bladeテンプレートで`@vite(['resources/js/app.js', 'resources/scss/app.scss'])`を使用
@@ -61,7 +63,7 @@ public/
     └── manifest.json
 ```
 
-### Mixを使っている場合（旧構成）
+### 旧構成の場合 (Mix環境)
 
 Laravel 8以前や既存プロジェクトではLaravel Mixが使用されています。基本方針はViteと同じです。
 
@@ -69,19 +71,17 @@ Laravel 8以前や既存プロジェクトではLaravel Mixが使用されてい
 * `webpack.mix.js`でビルド対象を指定
 * `npm run dev/build`で`public/`に出力
 
-### チーム開発での注意点
+## 【Tips】静的ファイル管理のポイント
 
-* `.gitignore`で`public/build/`や`node_modules/`は共有しない
+* `public/build/`や`node_modules/`を共有しないために`.gitignore`に追記する
+
 * `resources/`と`vite.config.js`はチーム内で共通管理する
-* 開発メンバーにViteの使い方を共有し、手動で`public/`に置く文化をなくす
 
-### よくある疑問
+* 画像やフォントは `resources/assets/` に置いてVite経由でビルドするか、もしくは公開前提の場合は`public/assets/`に直接配置する
 
-* **Q：画像やフォントはどこに置く？**
-  → `resources/assets/` に置いてVite経由でビルドするか、`public/assets/`に直接配置します（公開前提の場合）
+* CDNで読み込んでいたライブラリは、npm（Node.jsのパッケージマネージャ）を使ってライブラリをプロジェクトに追加し、Viteでバンドル管理する（依存関係の明示性とパフォーマンスが向上する）
 
-* **Q：jQueryやFont Awesomeなど、これまでCDNで読み込んでいたライブラリはどう扱うべき？**
-  → npm（Node.jsのパッケージマネージャ）を使って、jQueryやFont Awesomeなどのライブラリをプロジェクトに追加し、Viteでバンドル管理することで依存関係の明示性とパフォーマンスが向上します
+* 開発メンバーにViteの使い方の方針の共通認識を持ち、手動で`public/`に置く文化をなくす
 
 ## 【Tips】`resources/`と`public/`の違いを料理にたとえると？🍳
 
