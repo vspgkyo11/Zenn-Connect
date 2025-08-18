@@ -1,25 +1,23 @@
 ---
-title: "RufusでLive USBを作る手順と、diskpartで通常USBに戻す方法 完全ガイド"
+title: "[Windows]RufusでLive USBを作る手順と diskpartで通常USBに戻す方法"
 emoji: "💽"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Windows","Rufus","diskpart","LiveUSB","Linux"]
-published: false
+published: true
 ---
 ---
 
 ## はじめに
-
-WindowsでLinuxなどのISOイメージから起動用USBを作成したあと、そのUSBメモリを通常のストレージ用途へ戻したい場面は少なくありません。特にLive USBはパーティション構成が特殊になり、Windowsの「フォーマット」だけでは元に戻らないことがあります。本記事では、Rufusを使ったLive USBの作成手順と、diskpartで通常のUSBに戻す実務的な手順をまとめます。
+Windows 10のサポート終了が近づくなか、USBメモリでLive USBを作成しておきたい人も多いはずです。また、WindowsでLinuxなどのISOイメージから起動用USBを作成したあと、そのUSBメモリを通常のストレージ用途へ戻したい場面は少なくありません。さらに、USBメモリは「フォーマット」だけでは元に戻らないことがあります。本記事では、Rufusを使ったLive USBの作成手順と、diskpartで通常のUSBに戻す手順をまとめます。
 
 ## 対象者
 
-* PCでOSを入れ替えたい人
 * Windows 10 または 11 で起動用USBを作成したい人
 * 作成済みのLive USBを通常のUSBストレージに戻したい人
+* 古いUSBメモリが突然認識されないなどリセットしたい人
 
 
 ## 前提
-
 
 ### 用語
 
@@ -39,7 +37,7 @@ WindowsでLinuxなどのISOイメージから起動用USBを作成したあと�
 ### 事前準備
 
 * 管理者権限のWindows 10 あるいは 11
-* 作成したいOSのISOファイル
+* 作成したいOSのISOファイル（公式サイトからダウンロード）
 * 8GB以上のUSBメモリ（推奨）※USB3.0が望ましい。USB2.0だと認識されない場合がある
 * [Rufus](https://rufus.ie/ja/) 最新版の実行ファイル
 
@@ -113,8 +111,8 @@ DISKPART> assign
 DISKPART> exit
 ```
 
-これでエクスプローラーから通常のUSBメモリとして扱えるようになります
-上記で復旧しない場合は、USBポート変更や別PCでの実行も試す
+これでエクスプローラーから通常のUSBメモリとして扱えるようになります。
+上記で復旧しない場合は、以下の補足やUSBポート変更、別PCでの実行も試してみてください。
 
 :::message
 **補足**
