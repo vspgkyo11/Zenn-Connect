@@ -1,7 +1,7 @@
 {
   "name": "zenn-connect",
   "version": "1.0.0",
-  "description": "",
+  "description": "このフォルダは Zenn 投稿用のリポジトリです。   Git 管理＋自動デプロイ対象のため、**Obsidian 側から直接編集は行わないでください。**",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "^0.1.158"
+    "zenn-cli": "^0.1.162"
   }
 }
