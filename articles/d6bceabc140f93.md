@@ -1,5 +1,5 @@
 ---
-title: "【Next.js 15×Auth.js v5】ログイン後の無限ループ問題の本質と防止策"
+title: "【Next.js 15×Auth.js v5】ログイン後のループ問題の本質と防止策"
 emoji: "🔁"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Nextjs", "Authjs", "middleware", "redirectloop", "login"]
@@ -8,7 +8,7 @@ published: false
 
 ## はじめに
 
-Next.js 15で App Router と React Server Components（以下 RSC）を用いて、Auth.js v5によるログイン制御を導入していると、ログイン認証後に「/login で止まる」「_rsc リクエストが延々続く」「/api/auth/session が秒単位で叩かれる」といったリダイレクトループ現象に悩まされたことはありませんか？
+Next.js 15で App Router と React Server Components（以下 RSC）を用いて、Auth.js v5によるログイン制御を導入後、ログイン認証をすると「/login で止まる」「_rsc リクエストが延々続く」「/api/auth/session が秒単位で叩かれる」といった現象に悩まされたことはありませんか？
 
 本記事では、、Auth.js の内部構造と Next.js の middleware 機構を踏まえ、この現象の根本原因と対策を整理します。
 
@@ -24,7 +24,7 @@ Next.js 15で App Router と React Server Components（以下 RSC）を用いて
 
 ## 1. 症状の分析
 
-### 症状：/login 無限リロード（ループ）
+### 症状：/login ループ
 
 **特徴**
 
@@ -34,7 +34,7 @@ Next.js 15で App Router と React Server Components（以下 RSC）を用いて
 
 **原因**
 middleware が内部フェッチに対しても `auth()` を実行し、
-「再フェッチ → 認証確認 → redirect → 再フェッチ...」の無限循環が発生。
+「再フェッチ → 認証確認 → redirect → 再フェッチ...」のループが発生。
 
 ---
 
@@ -115,7 +115,7 @@ export async function middleware(req) {
 
 ## 4. クライアント側での再フェッチループ防止策
 
-Auth.js v5では、`useSession()` による `update()` 呼び出しもループの温床になります。
+Auth.js v5では、`useSession()` による `update()` 呼び出しもループの温床になりやすいです。
 
 ```tsx
 // 悪い例
@@ -142,8 +142,7 @@ useEffect(() => {
 
 ## 5. API層との整合性を保つ
 
-Edge（middleware）と Node（API）はランタイムが異なり、
-cookie や session の扱いも微妙に違います。
+Edge（middleware）と Node（API）はランタイムが異なり、cookie や session の扱いも微妙に違います。
 
 | 項目            | Edge（middleware） | Node（/api/auth） |
 | ------------- | ---------------- | --------------- |
@@ -168,51 +167,11 @@ cookie や session の扱いも微妙に違います。
 **検証環境例**
 Next.js 15.0.3 / Auth.js 5.0.1 / Node 20 / Vercel Edge / Chrome 118
 
-~~~~
 ---
 
 ## おわりに
 
-私自身、Next.js 15 と Auth.js v5 を導入した際に、「ログインできずにネットワークが騒がしい」というバグの解消に悩まされました。
+私自身、Next.js 15 と Auth.js v5 を導入した際に、「ログイン後に画面が変わらずにネットワークでループが起きている」というバグの解消に悩まされました。
 原因を辿れば、非同期フェッチと同期的なセッション検証部分の責務が混在したことが本質でした。
 
 本記事がもし同じ状況に直面している方の参考になれば幸いです。
-
----
-
-### 主要キーワード
-
-Next.js 15, Auth.js v5, middleware, redirect loop, _rsc, App Router, Edge Runtime, セッション管理, クロスログイン, 無限リロード, 再フェッチ, 防止策
-
----
-
-### サムネイル提案
-
-* 背景：Next.jsロゴ × 無限ループの矢印
-* テキスト：
-  「Next.js × Auth.js 無限ループの正体」
-  サブテキスト：「middleware と RSC の交差点を解剖」
-
----
-
-### SNS投稿テンプレート
-
-🆕 Zenn記事を公開しました！
-【Next.js】Auth.js v5でハマる無限ループの正体と防止策
-
-止まらない `/login`、続く `_rsc`。
-その本質は「Edge認証 × RSCフェッチの交差」にありました。
-
-✅ 症状の見分け方
-✅ middleware設計テンプレート
-✅ 再発防止の3層モデル
-
-▼記事はこちら
-[https://zenn.dev/xxx/articles/nextjs-auth-loop](https://zenn.dev/xxx/articles/nextjs-auth-loop)
-#Nextjs #Authjs #Web開発 #Zenn
-
----
-
-ご希望があれば、この改訂版に対応した
-**図解付き Zenn Canvas 用 Markdown（Mermaid／message対応）** を生成して投稿用に最適化できます。
-出力しますか？
