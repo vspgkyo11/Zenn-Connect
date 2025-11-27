@@ -1,5 +1,5 @@
 ---
-title: "【Vercel Neon】Docker一択じゃない。ローカルDB構成 Vercel Neon DB のすすめ"
+title: "【Vercel×Neon】Docker以外のローカルDB構成の選択肢"
 emoji: "📝"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Vercel","Neon","DB","Postgres"]
