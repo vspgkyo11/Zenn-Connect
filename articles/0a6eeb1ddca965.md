@@ -2,8 +2,8 @@
 title: "【Vercel Neon】Docker一択じゃない。ローカルDB構成 Vercel Neon DB のすすめ"
 emoji: "📝"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["Vercel","Neon","DB"]
-published: false
+topics: ["Vercel","Neon","DB","Postgres"]
+published: true
 ---
 
 ## はじめに
@@ -172,7 +172,6 @@ prisma.config.ts（Prisma 7）
 
 ```
 // prisma.config.ts
-
 import { defineConfig } from '@prisma/config'
 
 export default defineConfig({
@@ -191,5 +190,4 @@ DATABASE_URL="postgresql://user:pass@ep-xxxx.dev.neon.tech/neondb?sslmode=requir
 
 ## おわりに
 
-私自身、長らくローカルは Docker で Postgres を立ち上げるのが当たり前でした。しかし、Neon のブランチ運用をローカルに導入したことで本番と同じ環境で動いているという安心感が生まれ、開発のタイムロスが減りました。
-特に、Neon × Vercel × Prisma の組み合わせは、ブランチ機能を活用することでローカルでもクラウドと同一環境を再現でき、開発の負荷を大幅に減らしてくれるのでぜひ導入を検討してみてほしいです。この記事が開発環境を整える一つのヒントになれば嬉しいです。
+私自身、長らくローカルは Docker で Postgres を立ち上げるのが当たり前でした。しかし、Neon のブランチ運用をローカルに導入したことで、ローカルでもクラウドと同一環境を再現でき、開発の負荷を大幅に減らしてくれました。ぜひ一度 Neon ブランチでローカル開発を試してみてください。この記事が開発環境を整える一つのヒントになれば嬉しいです。
