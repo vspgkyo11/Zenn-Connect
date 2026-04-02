@@ -1,9 +1,9 @@
 ---
 title: "[Windows] ドスパラPC（DGP-WNB1301）に antiX を入れるまでの記録"
-emoji: "📝"
+emoji: "🏚️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["antiX", "Linux", "32bitUEFI", "M1Mac", "balenaEtcher"]
-published: false
+published: true
 ---
 
 ![](/images/Zenn_antiX/Zenn_antiX_top.png)
