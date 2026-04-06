@@ -11,7 +11,7 @@ published: true
 
 ## はじめに
  
-Windows 10 のサポート終了しました。手元のデバイスを有効活用したいため、ドスパラPC（DGP-WNB1301）に antiX を導入しました。本書では、実際に発生したつまずきを踏まえて整理したOS導入手順をまとめています。
+Windows 10 はサポート終了しました。手元のWindows PCを有効活用したいため、ドスパラPC（DGP-WNB1301）に antiX を導入しました。本書では、実際に発生したつまずきを踏まえて整理したOS導入手順をまとめています。
 
 ![](/images/Zenn_antiX/antix_desktop.jpg)
 
