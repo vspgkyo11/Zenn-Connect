@@ -10,6 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "zenn-cli": "^0.4.5"
-  }
+    "zenn-cli": "^0.4.7"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vspgkyo11/Zenn-Connect.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vspgkyo11/Zenn-Connect/issues"
+  },
+  "homepage": "https://github.com/vspgkyo11/Zenn-Connect#readme"
 }
