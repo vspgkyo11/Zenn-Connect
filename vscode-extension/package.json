@@ -1,0 +1,140 @@
+{
+	"name": "zenn-editor-local",
+	"displayName": "Zenn Editor (Local Fork)",
+	"description": "Zenn CLI を VS Code / Cursor に統合するローカル拡張（negokaz/vscode-zenn-editor を参考に作成、MITライセンス継承）",
+	"version": "0.1.0",
+	"publisher": "zenn-connect-local",
+	"private": true,
+	"engines": {
+		"vscode": "^1.75.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"Markdown",
+		"Zenn"
+	],
+	"icon": "media/icon/extension-icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vspgkyo11/Zenn-Connect.git",
+		"directory": "vscode-extension"
+	},
+	"activationEvents": [
+		"workspaceContains:articles",
+		"workspaceContains:books"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "zenn-editor.preview",
+				"title": "Zenn Editor: Open Preview",
+				"icon": {
+					"light": "./media/icon/preview-light.svg",
+					"dark": "./media/icon/preview-dark.svg"
+				}
+			},
+			{
+				"command": "zenn-editor.create-new-article",
+				"title": "Zenn Editor: Create New Article",
+				"icon": "$(file-text)"
+			},
+			{
+				"command": "zenn-editor.create-new-book",
+				"title": "Zenn Editor: Create New Book",
+				"icon": "$(book)"
+			},
+			{
+				"command": "zenn-editor.refresh-tree-view",
+				"title": "Zenn Editor: Refresh Tree View",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "zenn-editor.open-tree-view-item",
+				"title": "Zenn Editor: Open Tree View Item"
+			},
+			{
+				"command": "zenn-editor.open-image-uploader",
+				"title": "Zenn Editor: Open Image Uploader"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "zenn-editor.preview",
+					"when": "zenn-editor.activated && resourceLangId in zenn-editor.previewable-language-ids && zenn-editor.active-text-editor-is-previewable"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "zenn-editor.preview",
+					"when": "zenn-editor.activated && resourceLangId in zenn-editor.previewable-language-ids && zenn-editor.active-text-editor-is-previewable",
+					"group": "navigation"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "zenn-editor.preview",
+					"when": "zenn-editor.activated && resourceLangId in zenn-editor.previewable-language-ids && zenn-editor.active-text-editor-is-previewable",
+					"group": "navigation"
+				}
+			],
+			"view/title": [
+				{
+					"command": "zenn-editor.create-new-article",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				},
+				{
+					"command": "zenn-editor.create-new-book",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				},
+				{
+					"command": "zenn-editor.refresh-tree-view",
+					"when": "zenn-editor.activated && view == zenn",
+					"group": "navigation"
+				}
+			]
+		},
+		"views": {
+			"explorer": [
+				{
+					"id": "zenn",
+					"name": "Zenn Contents",
+					"when": "zenn-editor.activated"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"vsce:package": "vsce package --no-yarn"
+	},
+	"devDependencies": {
+		"@types/http-proxy": "^1.17.14",
+		"@types/node": "^20.11.0",
+		"@types/ps-tree": "^1.1.6",
+		"@types/vscode": "^1.75.0",
+		"@types/which": "^3.0.3",
+		"@vscode/vsce": "^3.9.2",
+		"css-loader": "^6.10.0",
+		"style-loader": "^3.3.4",
+		"ts-loader": "^9.5.1",
+		"typescript": "^5.3.3",
+		"webpack": "^5.90.0",
+		"webpack-cli": "^5.1.4"
+	},
+	"dependencies": {
+		"get-port": "^5.1.1",
+		"http-proxy": "^1.18.1",
+		"path-array": "^1.0.1",
+		"ps-tree": "^1.2.0",
+		"which": "^2.0.2",
+		"yaml": "^2.3.4"
+	}
+}
