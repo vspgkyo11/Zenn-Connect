@@ -4,6 +4,7 @@
 
 | タイトル | Type | Topics | 概要 |
 | --- | --- | --- | --- |
+| 🗂️ [[下書き] Zenn記事が量産されて迷子になったので、リポジトリ運用ルールを整理した](../articles/zenn-repo-organization-guide.md) | tech | `Zenn`, `個人開発`, `markdown` | Zenn への投稿を続けていくと、`articles/` の中に大量の Markdown ファイルが溜まっていきます。私のリポジトリもすでに75本を超え、ファイル名を見ても内容がまったく分からない状態... |
 | 🔧 [【WordPress】 MySQL 5.7 → 8.0 移行のための事前調査](../articles/1a1325fa179bc6.md) | tech | `WordPress`, `MySQL`, `さくらインターネット`, `データベース` | さくらインターネットの共用レンタルサーバー上で動いている WordPress サイトを、MySQL 5.7 から 8.0 へ移行しました。 さくらには「データベースアップグレード機能」があり、コントロ... |
 | 🔍 [[下書き] 【WordPress】sql_mode を自動で外す仕組み](../articles/1a394203280067.md) | tech | `WordPress`, `MySQL`, `データベース` | さくらインターネットの共用サーバーで WordPress を MySQL 5.7 → 8.0 に移行しました。事前にデータベースのダンプファイルを静的解析するとアップグレードにより `sql_mode... |
 | ⚠️ [[下書き] レンタルサーバーの MySQL は設定が緩い：MySQL 8.0 移行で 0000-00-00 問題が起きやすい理由](../articles/1a22b947edd80c.md) | tech | `MySQL`, `WordPress`, `レンタルサーバー`, `データベース` | さくらインターネットの共用サーバーで WordPress を MySQL 5.7 → 8.0 に移行したとき、まず確認したのが本番 DB の `sql_mode` だった。 `SELECT @@sql... |
