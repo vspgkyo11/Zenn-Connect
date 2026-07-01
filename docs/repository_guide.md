@@ -37,7 +37,7 @@ articles/efd31b50df3172.md
 | パス | Git管理 | 役割 |
 | --- | :---: | --- |
 | `articles/` | ✅ | **公開・下書きの本体**。Zenn が同期する。ファイル名＝スラッグ＝URL。 |
-| `books/` | ✅ | Zenn の「本」機能用（現状ほぼ未使用）。 |
+| `books/` | ✅ | Zenn の「本」機能用。**当面使わない方針**（`.keep` のみで放置でOK）。 |
 | `images/` | ✅ | 記事に使う画像。Zenn 仕様で**リポジトリ直下 `/images` が必須**。記事からは `/images/...` で参照。 |
 | `drafts/` | ❌（除外） | **公開前の作業場**。`.gitignore` 済みでプッシュされない。ここは自由な命名でOK。 |
 | `docs/` | ✅ | このガイド・索引・執筆スタイル分析などの**メタ情報**。 |
@@ -132,6 +132,24 @@ python3 -m venv .venv-scripts
 
 `.venv-scripts/` はグローバル `.gitignore` で除外されるため、コミット対象には入らない。
 
+### 執筆傾向の分析（analyze_articles.py）
+
+`docs/article_index.md` が「何を書いたか」の一覧なのに対し、
+[`scripts/analyze_articles.py`](../scripts/analyze_articles.py) は**「どう書いているか」＝執筆の特徴・癖を分析**するスクリプトです。
+
+- 文字数・見出し数（H2/H3）・コードブロック数・画像数などを記事ごとに集計
+- トピック／絵文字／`type` の出現頻度を集計
+- 本文の内容から記事タイプを推定（troubleshooting / comparison / tutorial / explanation）
+- 記事中のバージョン表記（`Laravel 10`, `v1.2.3` など）を抽出
+
+```bash
+# JSON形式で全データを出力
+.venv-scripts/bin/python3 scripts/analyze_articles.py --json
+```
+
+この分析結果は [`docs/writing_style.md`](./writing_style.md)（執筆傾向分析レポート）のベースになっています。
+索引と違い**定期更新の運用ルールは定めていない**ため、執筆スタイルを見直したい時にスポットで実行する位置づけです。
+
 ---
 
 ## 6. 画像・退避ファイルの扱い
@@ -158,8 +176,8 @@ python3 -m venv .venv-scripts
 - [x] 索引 `article_index.md` を最新の75本で再生成
 - [x] `docs/article_index.md` の見出し／案内コマンドのパスを実態に合わせる
 - [x] README にこのガイドへのリンクを追加して発見性を上げる
-- [ ] `scripts/analyze_articles.py` の役割をこのガイドに追記（未整理）
-- [ ] `books/` を使わないなら方針を明記（当面 `.keep` のみで放置でOK）
+- [x] `scripts/analyze_articles.py` の役割をこのガイドに追記
+- [x] `books/` を使わないなら方針を明記
 
 ---
 
