@@ -47,9 +47,9 @@ def generate_index(articles_dir, output_file):
     files = glob.glob(os.path.join(articles_dir, "*.md"))
     files.sort(key=os.path.getmtime, reverse=True) # 新しい順
     
-    header = """# 記事一覧インデックス
+    header = """# 過去の執筆記事一覧インデックス
 
-全記事の概要一覧です。`python3 .agents/scripts/generate_index.py` で更新できます。
+全記事の概要一覧です。`python3 scripts/generate_index.py` で更新できます。
 
 | タイトル | Type | Topics | 概要 |
 | --- | --- | --- | --- |
@@ -94,7 +94,7 @@ def generate_index(articles_dir, output_file):
 
 if __name__ == "__main__":
     target_dir = "articles"
-    output_path = ".agents/docs/article_index.md"
+    output_path = "docs/article_index.md"
     
     if os.path.exists(target_dir):
         # ディレクトリがない場合は作成
