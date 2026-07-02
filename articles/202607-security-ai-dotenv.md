@@ -3,7 +3,7 @@ title: "【dotenvx】 .env を暗号化する：AIエージェント時代に平
 emoji: "🔐"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["セキュリティ", "AI", "dotenvx", "環境変数"]
-published: false
+published: true
 ---
 
 ![](/images/zenn_security_dotenvx.png)
