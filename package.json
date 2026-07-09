@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "preview": "zenn preview",
     "new:article": "zenn new:article",
+    "new:tech": "zenn new:article --type tech --slug",
+    "new:idea": "zenn new:article --type idea --slug",
     "new:book": "zenn new:book",
     "list:articles": "zenn list:articles",
     "list:books": "zenn list:books"

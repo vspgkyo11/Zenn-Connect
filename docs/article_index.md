@@ -4,7 +4,8 @@
 
 | タイトル | Type | Topics | 概要 |
 | --- | --- | --- | --- |
-| 🗂️ [[下書き] Zenn記事が量産されて迷子になったので、リポジトリ運用ルールを整理した](../articles/zenn-repo-organization-guide.md) | tech | `Zenn`, `個人開発`, `markdown` | Zenn への投稿を続けていくと、`articles/` の中に大量の Markdown ファイルが溜まっていきます。私のリポジトリもすでに75本を超え、ファイル名を見ても内容がまったく分からない状態... |
+| 🔐 [[下書き] dotenvxで .env を暗号化する：AIエージェント時代に平文管理をやめる理由と手順](../articles/202607-security-ai-dotenv.md) | tech | `セキュリティ`, `AI`, `dotenvx`, `環境変数` | `.env` ファイルを平文のままローカル環境やサーバーに保存していませんか？ AI支援ツール（コード補完やAIエージェントなど）が日常的に使われるようになった現在、開発環境における機密情報（APIキ... |
+| 🗂️ [[下書き] Zenn記事が量産されて迷子になったので、リポジトリ運用ルールを整理した](../articles/202607-zenn-article-slug-naming.md) | tech | `Zenn`, `個人開発`, `markdown` | Zenn への投稿を続けていくと、`articles/` の中に大量の Markdown ファイルが溜まっていきます。私のリポジトリもすでに75本を超え、ファイル名を見ても内容がまったく分からない状態... |
 | 🔧 [【WordPress】 MySQL 5.7 → 8.0 移行のための事前調査](../articles/1a1325fa179bc6.md) | tech | `WordPress`, `MySQL`, `さくらインターネット`, `データベース` | さくらインターネットの共用レンタルサーバー上で動いている WordPress サイトを、MySQL 5.7 から 8.0 へ移行しました。 さくらには「データベースアップグレード機能」があり、コントロ... |
 | 🔍 [[下書き] 【WordPress】sql_mode を自動で外す仕組み](../articles/1a394203280067.md) | tech | `WordPress`, `MySQL`, `データベース` | さくらインターネットの共用サーバーで WordPress を MySQL 5.7 → 8.0 に移行しました。事前にデータベースのダンプファイルを静的解析するとアップグレードにより `sql_mode... |
 | ⚠️ [[下書き] レンタルサーバーの MySQL は設定が緩い：MySQL 8.0 移行で 0000-00-00 問題が起きやすい理由](../articles/1a22b947edd80c.md) | tech | `MySQL`, `WordPress`, `レンタルサーバー`, `データベース` | さくらインターネットの共用サーバーで WordPress を MySQL 5.7 → 8.0 に移行したとき、まず確認したのが本番 DB の `sql_mode` だった。 `SELECT @@sql... |

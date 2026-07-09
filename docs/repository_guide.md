@@ -74,15 +74,25 @@ Obsidian    →    drafts/ (git管理外)  →   articles/ にコピー    →  
 
 ## 3. 新規記事の作り方
 
-公式CLI（`zenn-cli`）でスラッグを**自分で指定**して作成します。
+公式CLI（`zenn-cli`）でスラッグを**自分で指定**して作成します。`type`（tech/idea）ごとに
+npm scripts のエイリアスを用意しているので、通常はこちらを使うと `--type` の指定漏れがありません。
 
 ```bash
-# スラッグを明示して作成（推奨）
-npx zenn new:article --slug laravel-session-separation
+# 技術記事（type: tech）を作成 — 第1引数がスラッグ、`--` の後ろに残りのオプション
+npm run new:tech -- laravel-session-separation --title "タイトル" --emoji 🔐
+
+# アイデア記事（type: idea）を作成
+npm run new:idea -- gas-gmail-auto-delete --title "タイトル" --emoji ✨
+
+# type を都度指定したい場合は素の new:article でも可
+npm run new:article -- --slug laravel-session-separation --title "タイトル" --type tech --emoji 🔐
 
 # プレビュー（ローカル確認）
-npx zenn preview
+npm run preview
 ```
+
+`--`（ダブルハイフン）を挟まないと、`npm` が `--title` などのオプションを自身のCLIフラグと
+誤認して警告を出したり値を落としたりするので、必ず `--` の後ろにオプションを続けてください。
 
 `--slug` を省くとランダム文字列になります。過去記事がそうなっているのは省略していたためで、
 **これからは意味のあるスラッグを付けられます。**
@@ -98,18 +108,23 @@ npx zenn preview
 
 ### このリポジトリの推奨フォーマット
 ```
-<カテゴリ>-<トピック>[-<補足>]
+YYYYMM-<ジャンル>-<キーワード>[-<補足>]
 ```
+
+`YYYYMM` は記事を作成した年月（例: 2026年7月なら `202607`）。書いた時期が分かるようにすることで、
+索引（§5）を見なくてもファイル名の並び順である程度時系列を追えるようにする狙いです。
 
 | 例 | 意図 |
 | --- | --- |
-| `laravel-session-separation` | Laravel × セッション分離 |
-| `nextjs16-middleware-to-proxy` | Next.js 16 の middleware→proxy 移行 |
-| `gas-gmail-auto-delete` | GAS × Gmail 自動削除 |
+| `202607-laravel-session-separation` | 2026年7月・Laravel × セッション分離 |
+| `202607-nextjs-middleware-to-proxy` | 2026年7月・Next.js の middleware→proxy 移行 |
+| `202608-gas-gmail-auto-delete` | 2026年8月・GAS × Gmail 自動削除 |
 
-- **カテゴリ**は既存トピックに合わせる：`laravel` / `nextjs` / `php` / `docker` / `gas` / `windows` / `linux` など。
+- **ジャンル**は既存トピックに合わせる：`laravel` / `nextjs` / `php` / `docker` / `gas` / `windows` / `linux` / `security` など。
 - 迷ったら「半年後の自分がURLを見て内容を思い出せるか」を基準に。
 - **既存の61本には遡及適用しない**（リネーム禁止）。新規ぶんから運用。
+- `/zenn-article-scaffolder`（`.claude/commands/`）または `zenn-article-scaffolder` サブエージェント（`.claude/agents/`）に記事概要を渡すと、この形式のスラッグ・title・emoji を提案した上で `npm run new:tech` / `new:idea` まで実行してくれる。
+- 下書き本文の評価・推敲は `/zenn-article-editor`（`.claude/commands/`）または `zenn-article-editor` サブエージェント（`.claude/agents/`）に任せる。新規性・需要のフィードバックを先に返し、ユーザーが明示的にGOしてから初めて既存記事のトーンに合わせた推敲・編集を行う2段階構成（本文執筆担当は他に `.agents/skills/article_professional_writing/SKILL.md` もあるが、こちらは評価→GO確認のゲートを持たない一括執筆用）。
 
 ---
 
@@ -129,7 +144,7 @@ python3 -m venv .venv-scripts
 .venv-scripts/bin/python3 scripts/generate_index.py
 ```
 
-`.venv-scripts/` はグローバル `.gitignore` で除外されるため、コミット対象には入らない。
+`.venv-scripts/` はリポジトリの `.gitignore` で除外されるため、コミット対象には入らない。
 
 ### 執筆傾向の分析（analyze_articles.py）
 
