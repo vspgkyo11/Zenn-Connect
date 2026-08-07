@@ -1,9 +1,9 @@
 ---
-title: "【AL2023移行】MT Cloud連携サーバーの切替 ― ALBとElastic IPの2経路移行"
+title: "【Amazon Linux 2023】MT Cloud連携サーバーの切替 ― ALBとElastic IPの2経路移行"
 emoji: "🔀"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["aws", "ec2", "alb", "nginx", "movabletype"]
-published: false
+published: true
 ---
 
 ![](/images/zenn_server-switch_ALB+ElasticIP.png)
@@ -12,7 +12,9 @@ published: false
 
 前回、Amazon Linux 2 (AL2) のサポート終了に伴い、静的サイトを配信しているEC2をAmazon Linux 2023 (AL2023) へ移行した流れを書きました。
 
+
 https://zenn.dev/ykbone/articles/202607-linux-al2023-migration
+
 
 前回は新サーバーを用意するところまでで、実際の切り替えはまだでした。本記事はその続編で、用意した新サーバーへ実際に向け先を変えるフェーズの記録です。
 
@@ -109,16 +111,6 @@ graph TB
 ### コラム：ロールバック手順
 
 戻す手順は切替の逆で、新サーバーを登録解除して、旧サーバーを登録し直すだけです。
-
-```mermaid
-graph LR
-    subgraph V["検証環境（参考にならない数字）"]
-        V1["旧サーバーも401で異常判定"] --> V2["fail open<br/>全ターゲットへ振り分け"] --> V3["数秒で復活したように見える"]
-    end
-    subgraph P["本番（正規の目安値）"]
-        P1["旧サーバーは正常応答"] --> P2["正規のロールバック手順<br/>登録→ヘルスチェック通過"] --> P3["60〜90秒で復帰"]
-    end
-```
 
 旧サーバーがヘルスチェックに応答できていたなら、戻し時間は閲覧経路の切替で測った秒数が目安となります。切替時に旧サーバーを登録解除せず残しておけば、戻すときは新サーバーを外すだけで済み、この待ち時間ごと無くせます。
 
