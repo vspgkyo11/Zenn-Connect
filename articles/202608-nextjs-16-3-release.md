@@ -3,7 +3,7 @@ title: "【Next.js】Vercelが「Next.js 16.3」を正式リリース、開発�
 emoji: "🚀"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["nextjs", "vercel", "javascript"]
-published: false
+published: true
 ---
 
 ![](/images/zenn_nextjs-16-3-release.jpg)
