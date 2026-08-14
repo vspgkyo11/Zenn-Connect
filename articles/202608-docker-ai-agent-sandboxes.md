@@ -6,7 +6,7 @@ topics: ["Docker", "AI", "セキュリティ", "MicroVM"]
 published: false
 ---
 
-![](/images/zenn_Docker Sandboxes_release.jpg)
+![](/images/zenn_DockerSandboxes_release.jpg)
 
 ## はじめに
 
