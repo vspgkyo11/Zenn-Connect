@@ -1,5 +1,5 @@
 ---
-title: "【Docker Sandboxes】AIエージェントを安全に自律実行させるための隔離環境"
+title: "【Docker Sandboxes】AIエージェントを安全に自律実行させる隔離環境"
 emoji: "🔐"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Docker", "AI", "セキュリティ", "MicroVM"]
