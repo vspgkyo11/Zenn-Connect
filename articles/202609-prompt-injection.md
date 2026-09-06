@@ -3,7 +3,7 @@ title: "【プロンプトインジェクション】AI時代の「見えない�
 emoji: "🪤"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["ai", "security", "llm", "mcp", "prompt-injection"]
-published: false
+published: true
 ---
 
 ![](/images/zenn-prompt-injection)
