@@ -1,0 +1,50 @@
+// vscode-extension/ (Zenn Editor Local) の代替。
+// Zed拡張はLanguages/Debuggers/Themes/IconThemes/Snippets/MCP Serversのみ提供可能で、
+// カスタムTreeViewやWebviewプレビューを実装する拡張点が存在しないため、
+// 代わりにzenn-cliコマンドをタスク化して使う。
+//
+// 移植できないもの:
+// - Zenn Contentsツリービュー自体はProject Panelで代替(draft/publishedアイコン装飾は不可)
+// - プレビューはWebview埋め込みではなくブラウザで別途開く運用になる
+[
+  {
+    "label": "Zenn: 新規記事作成 (new:article)",
+    "command": "npx",
+    "args": ["zenn", "new:article"],
+    "reveal": "always"
+  },
+  {
+    "label": "Zenn: 新規本作成 (new:book)",
+    "command": "npx",
+    "args": ["zenn", "new:book"],
+    "reveal": "always"
+  },
+  {
+    "label": "Zenn: プレビュー起動",
+    "command": "npx",
+    "args": ["zenn", "preview"],
+    "use_new_terminal": true,
+    "reveal": "always",
+    "hide": "never",
+    "allow_concurrent_runs": false
+  },
+  {
+    "label": "Zenn: 記事一覧 (draft/published確認)",
+    "command": "npx",
+    "args": ["zenn", "list:articles"],
+    "reveal": "always"
+  },
+  {
+    "label": "Zenn: 本一覧",
+    "command": "npx",
+    "args": ["zenn", "list:books"],
+    "reveal": "always"
+  },
+  {
+    "label": "Zenn: 画像アップロードページを開く",
+    "command": "open",
+    "args": ["https://zenn.dev/dashboard/uploader"],
+    "reveal": "never",
+    "hide": "always"
+  }
+]

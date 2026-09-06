@@ -3,5 +3,11 @@
     "pasteImage.insertPattern": "${imageSyntaxPrefix}/${imageFilePath}${imageSyntaxSuffix}",
     "pasteImage.path": "${currentFileDir}/../images/${currentFileNameWithoutExt}",
     "files.autoSave": "onFocusChange",
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "2026.md": "2026*.md",
+        "202501-202606.md": "0109cf745c3a0e.md, 057d600f6bfb30.md, 080ad365426628.md, 0a6eeb1ddca965.md, 0ff40c3b3afc6b.md, 105feb5ca2e151.md, 10ef0571661d97.md, 145309d02c59a5.md, 14613a3efdfc9b.md, 1a1325fa179bc6.md, 1a22b947edd80c.md, 1a394203280067.md, 1e34fb80f1d2cc.md, 2211cfadf845b3.md, 2acd8e02d35492.md, 2b4ed1f81c4afb.md, 2c7a8b1e9ad6be.md, 2cf031c95af9ee.md, 2ffdf1e5edde08.md, 32ecadd6b48cd0.md, 339240d44da7be.md, 43871d901229cb.md, 45a81ee132b051.md, 46f8d41a6a2539.md, 4a7584ad296f20.md, 4a7f4210ebf6b5.md, 4a967c035e027b.md, 4b6e98c870240c.md, 5d1f4ec70c5f24.md, 60bfd2e045b347.md, 67fcd1fa5423e6.md, 69f9e752186f51.md, 6d7f3bf2a5e5db.md, 6fa20c58eea86d.md, 70486ff1e196c0.md, 71f5a58d29a180.md, 72d79bf996c95b.md, 7328fdae62f937.md, 7c859a4bb3d10c.md, 7e62d0320a7f05.md, 8496d5deb658eb.md, 86debed3021396.md, 8a32cd0d6216a0.md, 92f089e739f54b.md, 95c097dd6728a9.md, 9b0efbb350f114.md, 9c90256d5d2e2c.md, 9ea3f1ae34e0aa.md, a0a382096e689a.md, a6c85350eef102.md, ad447c5e794b75.md, ade466b48d4ec5.md, b180af9b21b494.md, b1fcce41c176cc.md, b797897e9e9b44.md, b9b51e6ab7400c.md, bc18634c090f34.md, bc52e7887d6646.md, c236bdf869293c.md, c47aae91d2f3d8.md, ca578b638ebcb3.md, cb35ba5b078877.md, cc4552461dd338.md, d05d695f75db88.md, d55ff16fbee536.md, d6bceabc140f93.md, d9031ee6c57f65.md, daeb1040cecd3d.md, dbf67844f605ad.md, e1e6b072e89c27.md, e6e3d1e59fb209.md, e71df0d5016774.md, ea398a9608825d.md, edee1ed3479dec.md, efd31b50df3172.md"
+    }
 }

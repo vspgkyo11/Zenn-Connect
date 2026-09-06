@@ -1,0 +1,11 @@
+{
+  // .vscode/settings.json からの移植分
+  // files.autoSave: "onFocusChange" 相当
+  "autosave": "on_focus_change",
+  // editor.wordWrap: "on" 相当
+  "soft_wrap": "editor_width"
+
+  // 移植できないもの(Zedに相当機能が無いため未設定):
+  // - explorer.fileNesting.* (プロジェクトパネルのネスト表示は Zed 未対応)
+  // - pasteImage.* (クリップボード画像の自動保存貼り付けは Zed 未対応)
+}
