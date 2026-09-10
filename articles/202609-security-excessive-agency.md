@@ -3,7 +3,7 @@ title: "【Excessive Agency】AIエージェントに強い権限を与える前
 emoji: "🔓"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["ai", "security", "llm", "mcp", "agent"]
-published: false
+published: true
 ---
 
 ![](/images/zenn_excessive_agency.jpg)
