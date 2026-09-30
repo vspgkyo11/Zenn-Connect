@@ -10,6 +10,7 @@ Git 管理＋自動デプロイ対象のため、**Obsidian 側から直接編�
 
 ## ドキュメント
 - [リポジトリ運用ガイド](docs/repository_guide.md) — ディレクトリ構成、記事のライフサイクル、スラッグ命名規則など
+- [記事公開＆記事申請フォーム送信の手順](docs/publish_apply_guide.md) — `npm run publish:apply` / スキル `/zenn-publish-apply`
 - [記事一覧インデックス](docs/article_index.md) — 全記事の概要一覧（`python3 scripts/generate_index.py` で更新）
 
 ## npm スクリプト（Zenn CLI エイリアス）
@@ -29,5 +30,5 @@ Claude Code からはスキル `/zenn-publish-apply` で呼び出せます（詳
 cp .env.zenn-publish.example .env.zenn-publish          # 初回のみ：設定
 npm run publish:apply -- login                         # 初回のみ：Google にログイン（ブラウザが開く）
 npm run publish:apply -- list                          # 未公開記事の一覧
-npm run publish:apply -- run --slug 202610-security-hacking-openai --at "2026/10/01 08:00" --category "セキュリティ"
+npm run publish:apply -- run --slug 202610-security-hacking-openai --category "セキュリティ" --headed   # 今すぐ公開して申請
 ```

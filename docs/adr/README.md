@@ -19,3 +19,4 @@
 | [0001](./0001-never-rename-published-article-slugs.md) | 公開済み記事のファイル名（スラッグ）はリネームしない | Accepted |
 | [0002](./0002-vscode-extension-local-fork.md) | vscode-extension/ を非公開のローカルフォークとして自作する | Accepted |
 | [0003](./0003-dependency-update-policy.md) | 依存関係の更新はnpm auditだけに頼らず上流の変更履歴を確認する | Accepted |
+| [0004](./0004-publish-apply-automation.md) | 記事公開と記事申請フォーム送信を Playwright スクリプトで自動化し、フォーム送信は手元の Mac で行う | Accepted |

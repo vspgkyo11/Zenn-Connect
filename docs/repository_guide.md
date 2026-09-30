@@ -39,9 +39,10 @@ articles/efd31b50df3172.md
 | `drafts/` | ❌（除外） | **公開前の作業場**。`.gitignore` 済みでプッシュされない。ここは自由な命名でOK。 |
 | `docs/` | ✅ | このガイド・索引・執筆スタイル分析・ADRなどの**メタ情報**。 |
 | `docs/adr/` | ✅ | 意思決定の記録（ADR）。理由（Why）はここ、手順（How）は本ガイド。 |
-| `scripts/` | ✅ | 索引生成などの運用スクリプト。 |
+| `scripts/` | ✅ | 索引生成・記事公開＆申請（`zenn-publish-apply.mjs`）などの運用スクリプト。 |
 | `archive/` | ✅ | 退避用（現在空）。役割は §6 で定義。 |
 | `.agents/` | ✅ | AIエージェント用のルール・スキル定義。 |
+| `.claude/skills/` | ✅ | Claude Code 用スキル（`/zenn-publish-apply` など）。`.claude/` の他は管理対象外。 |
 | `vscode-extension/` | ✅ | Zenn CLI 統合エディタ拡張のローカルフォーク（非公開）。詳細は [ADR-0002](./adr/0002-vscode-extension-local-fork.md)。 |
 | `README.md` | ✅ | Obsidian 連携の注意書き（直接編集禁止の周知）。 |
 
@@ -66,6 +67,8 @@ Obsidian    →    drafts/ (git管理外)  →   articles/ にコピー    →  
 - **草稿は `drafts/` で育てる**：命名自由・何度でもリネーム可・push されない。
 - **`articles/` へ移す時点でスラッグを決め切る**：ここから先は名前が永続IDになる。
 - **公開は `published: true`**：`articles/` に置いても `false` の間は Zenn 上で下書き扱い。
+- **公開と社内の記事申請はスクリプトで一括実行**：`npm run publish:apply -- run --slug <slug> --category "<カテゴリー>" --headed`
+  （予約公開・申請フォームの詳細は [記事公開＆記事申請フォーム送信の手順](./publish_apply_guide.md)）。
 
 > Obsidian 連携の原則（README より）：草稿は Obsidian の `10_notes`/`11_Idea` に置き、
 > このリポジトリは「参照専用」。Obsidian から直接 `articles/` を編集しない。
@@ -201,3 +204,4 @@ python3 -m venv .venv-scripts
 - **草稿は `drafts/`、公開は `articles/`。** スラッグは `articles/` 入りのタイミングで確定。
 - **新規は `--slug` で意味のある名前を。** 規則は §4。
 - **記事を増やしたら索引を再生成。** それが唯一の「一覧を最新に保つ」手段。
+- **公開と記事申請は `publish:apply` で。** 手順は [publish_apply_guide.md](./publish_apply_guide.md)。
