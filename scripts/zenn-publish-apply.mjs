@@ -65,6 +65,7 @@ const CATEGORIES = [
   "セキュリティ",
   "ゲーム開発",
   "キャリア",
+  "その他",
 ];
 
 // topics → 記事カテゴリーの推定表（--category 省略時に使用）
@@ -592,10 +593,9 @@ async function cmdRun(opts, { checkOnly = false } = {}) {
   } else {
     if (runAt > new Date()) await waitUntil(runAt);
     log("▶️  実行開始");
-    if (!opts["skip-git"]) {
-      await publishArticle(article, { dryRun });
-      if (!dryRun && !opts["no-verify-url"]) await waitForPublicUrl(url);
-    }
+    if (!opts["skip-git"]) await publishArticle(article, { dryRun });
+    // --skip-git（公開済み記事のフォーム再送など）でも、送信前に公開URLを確認する
+    if (!dryRun && !opts["no-verify-url"]) await waitForPublicUrl(url);
   }
   if (!opts["skip-form"]) {
     await submitForm({ article, url, postDate: runAt, category, dryRun, headed });
