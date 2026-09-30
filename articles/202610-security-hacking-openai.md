@@ -1,15 +1,18 @@
 ---
-title: "【AIとエクスプロイト】「攻撃が難しい」に頼った防御が崩れ始めている ― Hacktron「Hacking OpenAI」から考える"
+title: "【セキュリティ】OpenAIインシデントから学ぶ攻撃チェーン"
 emoji: "🔐"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["ai", "security", "llm", "vulnerability"]
 published: false
 ---
+
+![](/images/zenn_openai_incident.jpg)
+
 ## はじめに
 
-2026年9月、セキュリティ企業 Hacktron の研究者3人が [Hacking OpenAI](https://www.hacktron.ai/blog/hacking-openai) というレポートを公開しました。OpenAIのバグバウンティ（脆弱性報奨金制度）の中で行った調査の報告です。フォーラムへの画像アップロードを起点に、72時間足らずでOpenAI従業員のChatGPT／Codexアカウントへのアクセスを得て、社内リポジトリに無害なプルリクエストを1件作るところまでたどり着いています。
+2026年9月、セキュリティ企業 Hacktron の研究者3人が [Hacking OpenAI](https://www.hacktron.ai/blog/hacking-openai) というレポートを公開しました。OpenAIのバグバウンティ（脆弱性報奨金制度）の中で行った調査の報告です。フォーラムへの画像アップロードを起点に、72時間足らずでOpenAI従業員のChatGPT/Codexアカウントへのアクセスを得て、社内リポジトリに無害なプルリクエストを1件作るところまでたどり着いています。
 
-[https://www.hacktron.ai/blog/hacking-openai](https://www.hacktron.ai/blog/hacking-openai)
+https://www.hacktron.ai/blog/hacking-openai
 
 ```mermaid
 flowchart LR
@@ -37,7 +40,7 @@ flowchart LR
 | 入口    | OpenAIのヘルプフォーラム（Discourseで構築）の画像アップロード                                          |
 | 原因1   | 画像処理ライブラリ `libheif` の、CVEの付いていないセキュリティ修正がDebianのパッケージに取り込まれていなかった               |
 | 原因2   | OpenAIのSSO（シングルサインオン）の設定不備                                                      |
-| AIの役割 | Claude Opus 4.8／Opus 5 を使い、エクスプロイトの作成と環境への適合を進めた                                |
+| AIの役割 | Claude Opus 4.8/Opus 5 を使い、エクスプロイトの作成と環境への適合を進めた                                |
 | 期間    | 脆弱性の発見から実証まで72時間未満                                                              |
 | 対応    | OpenAIは報告から約14時間で修正し、報奨金6,500ドルを支払った。Discourseはアドバイザリ（GHSA-vhm9-85gw-x335）を公開した |
 
