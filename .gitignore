@@ -12,10 +12,16 @@ node_modules/
 .venv-scripts/
 
 # Claude Code のローカル設定（個人環境固有の絶対パスを含むため管理対象外）
-.claude/
+# ただしプロジェクト共有のスキル（.claude/skills/）は管理対象にする
+.claude/*
+!.claude/skills/
 
 # Dropboxの衝突ファイル
 *.conflicted*
 
 # 下書き（公開前の作業場。articles/ へ移すまでは管理対象外）
 drafts/
+
+# 記事公開＆申請フォーム自動化（scripts/zenn-publish-apply.mjs）の秘密情報とログ
+.env.zenn-publish
+.zenn-publish/

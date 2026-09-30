@@ -20,3 +20,14 @@ Git 管理＋自動デプロイ対象のため、**Obsidian 側から直接編�
 | `npm run new:book -- --slug <slug>` | 新しい本を作成 |
 | `npm run list:articles` | 記事一覧を表示 |
 | `npm run list:books` | 本一覧を表示 |
+
+## 記事の公開＆記事申請フォーム送信の自動化
+`scripts/zenn-publish-apply.mjs` で「指定日時に `published: true` → commit → push → 社内の記事申請フォーム送信」を一括実行できます。
+Claude Code からはスキル `/zenn-publish-apply` で呼び出せます（詳細は `.claude/skills/zenn-publish-apply/SKILL.md`）。
+
+```bash
+cp .env.zenn-publish.example .env.zenn-publish          # 初回のみ：設定
+npm run publish:apply -- login                         # 初回のみ：Google にログイン（ブラウザが開く）
+npm run publish:apply -- list                          # 未公開記事の一覧
+npm run publish:apply -- run --slug 202610-security-hacking-openai --at "2026/10/01 08:00" --category "セキュリティ,AI・機械学習"
+```

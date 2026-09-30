@@ -11,7 +11,8 @@
     "new:idea": "zenn new:article --type idea --slug",
     "new:book": "zenn new:book",
     "list:articles": "zenn list:articles",
-    "list:books": "zenn list:books"
+    "list:books": "zenn list:books",
+    "publish:apply": "node scripts/zenn-publish-apply.mjs"
   },
   "keywords": [],
   "author": "",
@@ -30,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/vspgkyo11/Zenn-Connect/issues"
   },
-  "homepage": "https://github.com/vspgkyo11/Zenn-Connect#readme"
+  "homepage": "https://github.com/vspgkyo11/Zenn-Connect#readme",
+  "devDependencies": {
+    "playwright": "^1.56.1"
+  }
 }
