@@ -350,11 +350,15 @@ async function openForm(page, { headed }) {
   }
 }
 
-function question(page, label) {
-  return page
+// 同じ見出し文言の説明ブロックと取り違えないよう、入力要素を持つ質問を優先する
+async function question(page, label) {
+  const items = page
     .locator('div[role="listitem"]')
-    .filter({ has: page.locator('[role="heading"]', { hasText: label }) })
-    .first();
+    .filter({ has: page.locator('[role="heading"]', { hasText: label }) });
+  const withInput = items.filter({
+    has: page.locator('input, textarea, [role="radio"], [role="checkbox"], [role="listbox"]'),
+  });
+  return (await withInput.count()) ? withInput.first() : items.first();
 }
 
 async function fillText(q, value) {
@@ -399,11 +403,43 @@ async function check(el, fallbackClick) {
   return false;
 }
 
+// 選択肢の探し方は複数ある（data-value / aria-label / aria-labelledby 経由の名前 / 文言）ので順に試す
+async function findOption(q, value) {
+  const roles = ["radio", "checkbox"];
+  const candidates = [
+    q.locator(roles.map((r) => `[role="${r}"][data-value="${value}"], [role="${r}"][data-answer-value="${value}"], [role="${r}"][aria-label="${value}"]`).join(", ")),
+    ...roles.map((r) => q.getByRole(r, { name: value, exact: true })),
+    ...roles.map((r) => q.getByRole(r, { name: value })),
+    // 文言を含み、かつ選択肢を内包する最も内側の要素（DOM順で最後に来る祖先）の中の選択肢
+    q.locator("label, div, span").filter({ hasText: value }).filter({ has: q.page().locator('[role="radio"], [role="checkbox"]') }).last().locator('[role="radio"], [role="checkbox"]'),
+  ];
+  for (const c of candidates) if (await c.count()) return c.first();
+  return null;
+}
+
+async function describeOptions(q) {
+  const opts = await q.locator('[role="radio"], [role="checkbox"], [role="option"]').evaluateAll((els) =>
+    els.map((e) => `${e.getAttribute("role")}:${e.getAttribute("aria-label") || e.getAttribute("data-value") || e.getAttribute("data-answer-value") || e.textContent.trim()}`)
+  );
+  const text = (await q.innerText()).replace(/\s+/g, " ").slice(0, 400);
+  return `\n  検出した選択肢: ${opts.join(" | ") || "(なし)"}\n  質問欄の文言: ${text}`;
+}
+
 async function choose(q, role, value) {
-  const opt = q.locator(`[role="${role}"][data-value="${value}"], [role="${role}"][data-answer-value="${value}"], [role="${role}"][aria-label="${value}"]`).first();
-  if (!(await opt.count())) throw new Error(`選択肢「${value}」が見つかりません`);
+  // プルダウン形式の質問
+  const listbox = q.locator('[role="listbox"]');
+  if (!(await findOption(q, value)) && (await listbox.count())) {
+    await listbox.first().click();
+    const page = q.page();
+    await page.locator(`[role="option"][data-value="${value}"]`).last().click();
+    await sleep(500);
+    if ((await listbox.first().innerText()).includes(value)) return;
+    throw new Error(`プルダウンで「${value}」を選択できませんでした${await describeOptions(q)}`);
+  }
+  const opt = await findOption(q, value);
+  if (!opt) throw new Error(`選択肢「${value}」が見つかりません${await describeOptions(q)}`);
   const ok = await check(opt, () => q.getByText(value, { exact: true }).first().click());
-  if (!ok) throw new Error(`「${value}」を選択できませんでした`);
+  if (!ok) throw new Error(`「${value}」を選択できませんでした${await describeOptions(q)}`);
 }
 
 async function enableCopyToSelf(page) {
@@ -446,7 +482,7 @@ async function submitForm({ article, url, postDate, categories, dryRun, headed }
     for (let pageNo = 1; pageNo <= 10; pageNo++) {
       for (const [label, fill] of fields) {
         if (done.has(label)) continue;
-        const q = question(page, label);
+        const q = await question(page, label);
         if (!(await q.count())) continue;
         await fill(q);
         done.add(label);
