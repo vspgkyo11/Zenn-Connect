@@ -1,5 +1,5 @@
 ---
-title: "【セキュリティ】OpenAIインシデントから学ぶ攻撃チェーン"
+title: "【セキュリティ】「Hacking OpenAI」から学ぶ、AIで変わる攻撃のコスト"
 emoji: "🔐"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["ai", "security", "llm", "vulnerability"]
