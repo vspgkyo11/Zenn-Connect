@@ -3,7 +3,8 @@ title: "【セキュリティ】「Hacking OpenAI」から学ぶ、AIで変わ�
 emoji: "🔐"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["ai", "security", "llm", "vulnerability"]
-published: false
+published: true
+published_at: 2026-10-01 07:00
 ---
 
 ![](/images/zenn_openai_incident.jpg)
