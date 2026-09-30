@@ -29,5 +29,5 @@ Claude Code からはスキル `/zenn-publish-apply` で呼び出せます（詳
 cp .env.zenn-publish.example .env.zenn-publish          # 初回のみ：設定
 npm run publish:apply -- login                         # 初回のみ：Google にログイン（ブラウザが開く）
 npm run publish:apply -- list                          # 未公開記事の一覧
-npm run publish:apply -- run --slug 202610-security-hacking-openai --at "2026/10/01 08:00" --category "セキュリティ,AI・機械学習"
+npm run publish:apply -- run --slug 202610-security-hacking-openai --at "2026/10/01 08:00" --category "セキュリティ"
 ```

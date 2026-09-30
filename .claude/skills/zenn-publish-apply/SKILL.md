@@ -27,7 +27,7 @@ description: Zenn 記事を指定日時に公開（published: true → commit �
 | --- | --- |
 | `--slug` | 手順1で確定したもの |
 | `--at` | ユーザー指定の日時（例 `"2026/10/01 08:00"`、JST）。未指定なら即時実行でよいか確認する |
-| `--category` | 記事本文・topics を読み、下の選択肢から該当するものをカンマ区切りで選ぶ（複数可） |
+| `--category` | 記事本文・topics を読み、下の選択肢から最も適したものを **1つだけ** 選ぶ（フォームは単一選択） |
 | `--reserve` | PC を起動しっぱなしにできない場合に提案する（下記「実行モード」参照） |
 
 記事カテゴリーの選択肢（この表記と完全一致させる）:
@@ -39,7 +39,7 @@ push とフォーム送信は取り消しが難しい外部操作なので、必
 
 ### 4. 事前チェック
 ```bash
-node scripts/zenn-publish-apply.mjs check --slug <slug> --category "<カテゴリー>"
+node scripts/zenn-publish-apply.mjs check --slug <slug> --category "<カテゴリー1つ>"
 ```
 - 「Google 未ログインです」と出たら、ユーザーに `node scripts/zenn-publish-apply.mjs login` を実行して
   ブラウザで `yuichi.kobayashi@onewedge.co.jp` にログインしてもらう（初回のみ。以後はプロファイルに保存される）。
@@ -49,7 +49,7 @@ node scripts/zenn-publish-apply.mjs check --slug <slug> --category "<カテゴ�
 ### 5. 実行
 指定日時まで待機するので、**Bash の `run_in_background` で起動**する。
 ```bash
-node scripts/zenn-publish-apply.mjs run --slug <slug> --at "<YYYY/MM/DD HH:mm>" --category "<カテゴリー>"
+node scripts/zenn-publish-apply.mjs run --slug <slug> --at "<YYYY/MM/DD HH:mm>" --category "<カテゴリー1つ>"
 ```
 完了後はログ末尾の「✅ フォーム送信完了」「🎉 すべての工程が完了しました」を確認し、
 `.zenn-publish/*-submitted.png` と控えメールの確認をユーザーに促す。失敗時は `*-error.png` を読んで原因を報告する。

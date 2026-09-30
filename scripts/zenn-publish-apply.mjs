@@ -11,7 +11,7 @@
 //   --slug <slug>          対象記事のスラッグ（articles/<slug>.md）
 //   --title <部分一致>     スラッグの代わりにタイトルで特定（未公開記事から1件に絞れること）
 //   --at "YYYY/MM/DD HH:mm" 実行日時（JST）。未来なら到来まで待機してから実行。省略時は即時
-//   --category "A,B"       記事カテゴリー（カンマ区切り）。省略時は topics から推定
+//   --category <名前>      記事カテゴリー（単一選択）。省略時は topics から推定
 //   --reserve              待機せず即時に push し、Zenn の予約公開(published_at)で --at に公開させる
 //   --dry-run              git は変更せず、フォームは入力までで送信しない（スクショを保存）
 //   --skip-git / --skip-form  それぞれの工程を飛ばす（片方だけやり直したい時用）
@@ -193,19 +193,19 @@ function resolveArticle(opts) {
 
 const articleUrl = (slug) => `https://zenn.dev/${CONFIG.zennUser}/articles/${slug}`;
 
-function resolveCategories(opts, article) {
+// 申請フォームの「記事カテゴリー」は単一選択（ラジオボタン）なので必ず1つに決める
+function resolveCategory(opts, article) {
   if (opts.category) {
     const list = String(opts.category).split(/[,、]/).map((s) => s.trim()).filter(Boolean);
-    const unknown = list.filter((c) => !CATEGORIES.includes(c));
-    if (unknown.length) fail(`未知のカテゴリー: ${unknown.join(", ")}\n選択肢: ${CATEGORIES.join(" / ")}`);
-    return list;
+    if (list.length !== 1) fail(`記事カテゴリーは単一選択です。--category は1つだけ指定してください（指定: ${list.join(", ")}）`);
+    if (!CATEGORIES.includes(list[0])) fail(`未知のカテゴリー: ${list[0]}\n選択肢: ${CATEGORIES.join(" / ")}`);
+    return list[0];
   }
-  const found = new Set();
+  // topics の並び順を優先度とみなし、最初に対応表に当たったものを採用する
   for (const t of article.topics.map((x) => x.toLowerCase().replace(/[\s.\-_]/g, ""))) {
-    for (const [re, cat] of TOPIC_CATEGORY_MAP) if (re.test(t)) found.add(cat);
+    for (const [re, cat] of TOPIC_CATEGORY_MAP) if (re.test(t)) return cat;
   }
-  if (found.size === 0) fail(`topics (${article.topics.join(", ")}) からカテゴリーを推定できません。--category で指定してください`);
-  return [...found];
+  fail(`topics (${article.topics.join(", ")}) からカテゴリーを推定できません。--category で指定してください`);
 }
 
 // ───────────────────────── git: 公開フラグ変更 → commit → push ─────────────────────────
@@ -454,7 +454,7 @@ async function enableCopyToSelf(page) {
   return check(cb, () => page.getByText("回答のコピーを自分宛に送信する").first().click());
 }
 
-async function submitForm({ article, url, postDate, categories, dryRun, headed }) {
+async function submitForm({ article, url, postDate, category, dryRun, headed }) {
   const context = await openBrowser({ headed });
   const page = context.pages()[0] || (await context.newPage());
   try {
@@ -471,9 +471,7 @@ async function submitForm({ article, url, postDate, categories, dryRun, headed }
       ["投稿日", (q) => fillDate(q, postDate)],
       ["記事のタイトル", (q) => fillText(q, article.title)],
       ["記事URL", (q) => fillText(q, url)],
-      ["記事カテゴリー", async (q) => {
-        for (const c of categories) await choose(q, "checkbox", c);
-      }],
+      ["記事カテゴリー", (q) => choose(q, "radio", category)],
     ];
     const done = new Set();
     let copyEnabled = false;
@@ -554,7 +552,7 @@ async function cmdLogin() {
   log(`✅ ログイン情報を保存しました: ${CONFIG.profileDir}`);
 }
 
-function summarize({ article, url, runAt, categories, opts }) {
+function summarize({ article, url, runAt, category, opts }) {
   const { y, m, d, hh, mm } = jstParts(runAt);
   console.log(
     [
@@ -565,7 +563,7 @@ function summarize({ article, url, runAt, categories, opts }) {
       `実行日時    : ${y}/${m}/${d} ${hh}:${mm} (JST)${opts.reserve ? "  ※Zenn予約公開(published_at)を使用" : ""}`,
       `申請種別    : ${CONFIG.applicationType}`,
       `氏名/メール : ${CONFIG.formName} / ${CONFIG.formEmail}`,
-      `カテゴリー  : ${categories.join(", ")}`,
+      `カテゴリー  : ${category}`,
       `工程        : ${opts["skip-git"] ? "" : "git公開 "}${opts["skip-form"] ? "" : "フォーム送信"}${opts["dry-run"] ? " (dry-run)" : ""}`,
       "──────────────────────────",
     ].join("\n")
@@ -576,10 +574,10 @@ async function cmdRun(opts, { checkOnly = false } = {}) {
   const article = resolveArticle(opts);
   const url = articleUrl(article.slug);
   const runAt = opts.at ? parseJst(opts.at) : new Date();
-  const categories = resolveCategories(opts, article);
+  const category = resolveCategory(opts, article);
   const headed = Boolean(opts.headed);
   const dryRun = Boolean(opts["dry-run"]);
-  summarize({ article, url, runAt, categories, opts });
+  summarize({ article, url, runAt, category, opts });
 
   // 待機に入る前に、落ちる要因を先に潰しておく
   if (!opts["skip-git"]) {
@@ -600,7 +598,7 @@ async function cmdRun(opts, { checkOnly = false } = {}) {
     }
   }
   if (!opts["skip-form"]) {
-    await submitForm({ article, url, postDate: runAt, categories, dryRun, headed });
+    await submitForm({ article, url, postDate: runAt, category, dryRun, headed });
   }
   log("🎉 すべての工程が完了しました");
 }
