@@ -376,11 +376,34 @@ async function fillDate(q, date) {
   if (await minute.count()) await minute.first().fill(mm);
 }
 
+// Google Forms はクリック後に aria-checked が非同期で切り替わるため、少し待って確認する
+async function isChecked(el, timeoutMs = 3000) {
+  const deadline = Date.now() + timeoutMs;
+  do {
+    if ((await el.getAttribute("aria-checked")) === "true") return true;
+    await sleep(150);
+  } while (Date.now() < deadline);
+  return false;
+}
+
+async function check(el, fallbackClick) {
+  if ((await el.getAttribute("aria-checked")) === "true") return true;
+  await el.scrollIntoViewIfNeeded().catch(() => {});
+  await el.click();
+  if (await isChecked(el)) return true;
+  // 要素自体のクリックが効かない場合はラベル文言側をクリックする
+  if (fallbackClick) {
+    await fallbackClick().catch(() => {});
+    if (await isChecked(el)) return true;
+  }
+  return false;
+}
+
 async function choose(q, role, value) {
   const opt = q.locator(`[role="${role}"][data-value="${value}"], [role="${role}"][data-answer-value="${value}"], [role="${role}"][aria-label="${value}"]`).first();
   if (!(await opt.count())) throw new Error(`選択肢「${value}」が見つかりません`);
-  if ((await opt.getAttribute("aria-checked")) !== "true") await opt.click();
-  if ((await opt.getAttribute("aria-checked")) !== "true") throw new Error(`「${value}」を選択できませんでした`);
+  const ok = await check(opt, () => q.getByText(value, { exact: true }).first().click());
+  if (!ok) throw new Error(`「${value}」を選択できませんでした`);
 }
 
 async function enableCopyToSelf(page) {
@@ -392,8 +415,7 @@ async function enableCopyToSelf(page) {
     cb = label.locator('xpath=ancestor::*[.//*[@role="checkbox" or @role="switch"]][1]').locator('[role="checkbox"], [role="switch"]').first();
     if (!(await cb.count())) return false;
   }
-  if ((await cb.getAttribute("aria-checked")) !== "true") await cb.click();
-  return (await cb.getAttribute("aria-checked")) === "true";
+  return check(cb, () => page.getByText("回答のコピーを自分宛に送信する").first().click());
 }
 
 async function submitForm({ article, url, postDate, categories, dryRun, headed }) {
