@@ -6,6 +6,8 @@ topics: ["ai", "security", "llm", "api"]
 published: false
 ---
 
+![](/images/zenn_unbounded-consumption.jpg)
+
 ## はじめに
 
 AIのAPIキーを発行したとき、利用額の上限を設定しましたか。
