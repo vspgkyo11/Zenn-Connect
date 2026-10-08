@@ -3,7 +3,7 @@ title: "【セキュリティ】「Hacking OpenAI」から学ぶ、4つの攻撃
 emoji: "🔐"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["security", "vulnerability", "sso", "imagemagick", "ai"]
-published: false
+published: true
 ---
 
 ## はじめに
