@@ -4,8 +4,8 @@
 
 | タイトル | Type | Topics | 概要 |
 | --- | --- | --- | --- |
-| 🔐 [[下書き] 【セキュリティ】相次ぐ情報漏えいから考える、エンジニアが今日から見直したい対策7選](../articles/202610-security-data-breach-engineers.md) | tech | `security`, `vulnerability`, `セキュリティ`, `個人情報`, `legacy` | 「動いているものには触るな」。 開発の現場で、一度は耳にしたことがある言葉ではないでしょうか。何年も安定して動いているシステムに手を入れるのは怖いですし、新機能の開発に比べると、更新作業はどうしても後... |
-| 🛡️ [[下書き] 【セキュリティ】「個人情報が流出しました」のメールが届く時代に、利用者ができる対策7選](../articles/202610-security-data-breach-users.md) | idea | `security`, `セキュリティ`, `個人情報`, `パスキー`, `ekyc` | 「お客様の個人情報が流出した可能性があります。申し訳ございません。」 こんなメールを受け取ったことはありませんか。私自身、ここしばらくのあいだに、いくつかの会社から「メールアドレスやお名前が流出しまし... |
+| 🔐 [[下書き] 【セキュリティ】相次ぐ情報漏えいから考える、エンジニアが今日から見直したい対策7選](../articles/202611-security-data-breach-engineers.md) | tech | `security`, `vulnerability`, `セキュリティ`, `個人情報`, `legacy` | 2026年9月、カーシェアサービス「タイムズカー」のWebシステムが不正アクセスを受け、約660万アカウントの情報が流出したことが公表されました。そのうち約160万アカウントでは、運転免許証の画像など... |
+| 🛡️ [[下書き] 【セキュリティ】「個人情報が流出しました」のメールが届く時代に、私たちができる対策7選](../articles/202610-security-data-breach-users.md) | idea | `security`, `セキュリティ`, `個人情報`, `パスキー`, `ekyc` | 「お客様の個人情報が流出した可能性があります。申し訳ございません。」 こんなメールを受け取ったことはありませんか。私自身、ここしばらくのあいだに、いくつかの会社から「メールアドレスやお名前が流出しまし... |
 | 🔍 [[下書き] 【WordPress】sql_mode を自動で外す仕組み](../articles/wordpress-sqlmode.md) | tech | `WordPress`, `MySQL`, `データベース` | さくらインターネットの共用サーバーで WordPress を MySQL 5.7 → 8.0 に移行しました。事前にデータベースのダンプファイルを静的解析するとアップグレードにより `sql_mode... |
 | 📘 [[下書き] 【VS Code×MCP×Context7】最新ドキュメントを読める AI コーディング環境構築](../articles/vscode-mcp-context7.md) | tech | `context7` | AI 補助によるコーディングは広く普及していますが、実際の開発現場では次のような課題が頻繁に発生します。 * API 仕様書を参照していないため、パラメータ名が誤っている * 最新の DB スキーマに... |
 | 📘 [[下書き] 【VS Code×MCP×Context7】最新ドキュメントを読める AI コーディング環境構築(Next.js編)](../articles/vscode-mcp-context.md) | tech | `context7` | ローカルに保存した公式ドキュメントやプロジェクト固有の仕様書を AI に参照させながらコーディングできる環境は、多くのエンジニアにとって理想的な開発体験といえる。とくに Next.js のように日々ア... |
@@ -72,7 +72,7 @@
 | 🛡️ [【DB接続】データベース接続の最小権限から始めるセキュリティ改善](../articles/2211cfadf845b3.md) | tech | `セキュリティ`, `データベース`, `AWS`, `SQL` | システム開発の初期段階では、利便性を優先してデータベースの管理者権限を持つユーザーをそのままアプリケーションの接続に使用してしまうことがあります。しかし、そのまま運用を続けることは、セキュリティ上の大... |
 | 💸 [[下書き] 【Unbounded Consumption】AIの請求書の金額が跳ね上がる仕組み](../articles/202610-security-unbounded-consumption.md) | tech | `ai`, `security`, `llm`, `api` | AIのAPIキーを発行したとき、利用額の上限を設定しましたか。 2024年5月、クラウドセキュリティ企業のSysdig社が、LLMjacking と名付けた攻撃を報告しました。攻撃者は、脆弱性の残った... |
 | 🔐 [【セキュリティ】「Hacking OpenAI」から学ぶ、4つの攻撃ステップと現場で確かめたいこと](../articles/202610-security-openai-chain.md) | tech | `security`, `vulnerability`, `sso`, `imagemagick`, `ai` | 2026年9月、セキュリティ企業 Hacktron の研究者3人が Hacking OpenAI というレポートを公開しました。OpenAIのヘルプフォーラムに画像を1枚アップロードするところから始ま... |
-| 🎭 [[下書き] 【Misinformation】AIの「もっともらしい間違い」は誰の責任か](../articles/202610-security-misinformation.md) | tech | `ai`, `security`, `llm`, `hallucination` | AIの回答を、確かめずにそのまま使ったことはありませんか。 私はあります。自信たっぷりに書かれたコマンドをそのまま実行し、動かなくて調べ直したことは一度や二度ではありません。とはいえ、そのときは「AI... |
+| 🎭 [[下書き] 【Misinformation】AIの「もっともらしい間違い」は誰の責任か](../articles/202611-security-misinformation.md) | tech | `ai`, `security`, `llm`, `hallucination` | AIの回答を、確かめずにそのまま使ったことはありませんか。 私はあります。自信たっぷりに書かれたコマンドをそのまま実行し、動かなくて調べ直したことは一度や二度ではありません。とはいえ、そのときは「AI... |
 | 🔐 [【セキュリティ】「Hacking OpenAI」から学ぶ、AIで変わる攻撃のコスト](../articles/202610-security-hacking-openai.md) | idea | `ai`, `security`, `llm`, `vulnerability` | 2026年9月、セキュリティ企業 Hacktron の研究者3人が Hacking OpenAI というレポートを公開しました。OpenAIのバグバウンティ（脆弱性報奨金制度）の中で行った調査の報告で... |
 | 📦 [【サプライチェーン】その MCP サーバー、誰が作ったか知っていますか](../articles/202609-security-supply-chain.md) | tech | `ai`, `security`, `llm`, `mcp`, `supplychain` | AIエディタにMCPサーバーを追加するとき、READMEに書いてある設定をそのまま貼り付けたことはありませんか。 { "mcpServers": { "postmark": { "command": ... |
 | 🔓 [【Excessive Agency】AIエージェントに強い権限を与える前に知っておきたいリスク](../articles/202609-security-excessive-agency.md) | tech | `ai`, `security`, `llm`, `mcp`, `agent` | ファイルを書き換える、コマンドを実行する、メールを送る、データベースを操作する。便利なAIエージェントほど、こうした外に出す手段、平たく言えばAIエージェントに与えている強い権限を持っています。 20... |
