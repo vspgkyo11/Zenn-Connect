@@ -1,9 +1,0 @@
----
-title: "Typescript 公式ドキュメントガイドブック"
-emoji: "👋"
-type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["ts"]
-published: false
----
-
-## はじめに
