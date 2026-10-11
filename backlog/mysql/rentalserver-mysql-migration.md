@@ -22,7 +22,7 @@ NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_E
 
 この設定が、`0000-00-00 00:00:00` という不正な日付値が数千件も蓄積していた直接の原因だった。「なぜレンタルサーバーはこういう設定になっているのか」を調べた内容をまとめる。
 
-移行作業の全体像は「[WordPress + MySQL 5.7 → 8.0 移行実録](https://zenn.dev/vspgkyo11/articles/wordpress-mysql8-upgrade-record)」を参照。
+移行作業の全体像は「[【WordPress】 MySQL 5.7 → 8.0 移行のための事前調査](https://zenn.dev/vspgkyo11/articles/1a1325fa179bc6)」を参照。
 
 ---
 
@@ -109,7 +109,7 @@ ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
 ERROR 1525 (HY000): Incorrect DATETIME value: '0000-00-00 00:00:00'
 ```
 
-ただし WordPress 経由の通常運用やダンプのインポートはこのエラーが出ない。壊れるのは「WordPress を通らない」文脈に限られる。なぜそうなるかは「[クレンジングは本当に必要だったのか](https://zenn.dev/vspgkyo11/articles/cleansing-was-it-necessary)」で掘り下げている。
+ただし WordPress 経由の通常運用やダンプのインポートはこのエラーが出ない。壊れるのは「WordPress を通らない」文脈に限られる。なぜそうなるかは「[【WordPress】sql_mode を自動で外す仕組み](https://zenn.dev/vspgkyo11/articles/cleansing-was-it-necessary)」で掘り下げている。
 
 ---
 
@@ -129,7 +129,7 @@ SELECT @@sql_mode;
 grep -c "0000-00-00 00:00:00" dump.sql
 ```
 
-0 件であれば問題なし。1 件以上あれば移行前にクレンジングが必要になる。クレンジングの具体的な手順は「[WordPress + MySQL 5.7 → 8.0 移行実録](https://zenn.dev/vspgkyo11/articles/wordpress-mysql8-upgrade-record)」の STEP 2 を参照。
+0 件であれば問題なし。1 件以上あれば移行前にクレンジングが必要になる。クレンジングの具体的な手順は「[【WordPress】 MySQL 5.7 → 8.0 移行のための事前調査](https://zenn.dev/vspgkyo11/articles/1a1325fa179bc6)」の「3. クレンジングの方針」を参照。
 
 ---
 
@@ -144,5 +144,5 @@ grep -c "0000-00-00 00:00:00" dump.sql
 
 ---
 
-**メイン記事**：[WordPress + MySQL 5.7 → 8.0 移行実録（さくらインターネット共用サーバー）](https://zenn.dev/vspgkyo11/articles/wordpress-mysql8-upgrade-record)
-**関連記事**：[クレンジングは本当に必要だったのか：WordPress が sql_mode を自分で外していた話](https://zenn.dev/vspgkyo11/articles/cleansing-was-it-necessary)
+**メイン記事**：[【WordPress】 MySQL 5.7 → 8.0 移行のための事前調査](https://zenn.dev/vspgkyo11/articles/1a1325fa179bc6)
+**関連記事**：[【WordPress】sql_mode を自動で外す仕組み](https://zenn.dev/vspgkyo11/articles/cleansing-was-it-necessary)

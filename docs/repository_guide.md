@@ -188,6 +188,7 @@ Zenn は `articles/` 直下の `.md` しか同期せず、**`articles/` 内の�
 
 - ファイル名は自由。公開する段階で §4 の命名規則でスラッグを付け、`articles/` へ `git mv` する。
 - `drafts/` との違い：`drafts/` は git 管理外の作業場、`backlog/` は git 管理下で履歴とバックアップが残る。
+- 置いてある下書きの一覧と、公開前にやること（裏取り・リンク修正など）は [`backlog/README.md`](../backlog/README.md) に書く。
 
 ### ⚠️ Zenn 側の記事はファイルを消しても消えない
 GitHub 連携では、`articles/` のファイルを**リネーム・移動・削除しても Zenn 上の記事は残ります**

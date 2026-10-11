@@ -14,6 +14,8 @@ published: false
 
 ローカルDocker環境で再調査してみると、クレンジングなしでもアップグレードは成功しデータ欠落は発生しませんでした。本記事では、これらの背景と原因を掘り下げます。
 
+移行作業の全体像は「[【WordPress】 MySQL 5.7 → 8.0 移行のための事前調査](https://zenn.dev/vspgkyo11/articles/1a1325fa179bc6)」にまとめています。
+
 
 
 ## 前提：MySQL 5.7 → 8.0 で sql_mode が変わる
