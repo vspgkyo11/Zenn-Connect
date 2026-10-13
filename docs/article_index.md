@@ -4,6 +4,7 @@
 
 | タイトル | Type | Topics | 概要 |
 | --- | --- | --- | --- |
+| 🛡️ [【セキュリティ】「個人情報が流出しました」のメールが届く時代に、私たちができる対策7選](../articles/202610-security-data-breach-users.md) | idea | `security`, `セキュリティ`, `個人情報`, `パスキー`, `ekyc` | 「お客様の個人情報が流出した可能性があります。申し訳ございません。」 こんなメールを受け取ったことはありませんか。私自身、ここしばらくのあいだに、いくつかの会社から「メールアドレスやお名前が流出しまし... |
 | 🚦 [【ポート競合対策】個人開発でローカル環境のポート番号割り当ての工夫](../articles/efd31b50df3172.md) | tech | `Docker`, `PORT`, `DB` | ローカルで複数のWebアプリやサービスを開発していると、ポートが競合して接続できない事態に遭遇します。特にDockerやXAMPP、MySQLなどを併用していると頻繁に発生します。本記事では、開発環境... |
 | 💽 [[Windows]RufusでLive USBを作る手順と diskpartで通常USBに戻す方法](../articles/edee1ed3479dec.md) | tech | `Windows`, `Rufus`, `diskpart`, `LiveUSB`, `Linux` | --- Windows 10のサポート終了が近づくなか、USBメモリでLive USBを作成しておきたい人も多いはずです。また、WindowsでLinuxなどのISOイメージから起動用USBを作成した... |
 | 🛂 [【GUGA】生成AIパスポート受験体験記](../articles/ea398a9608825d.md) | idea | `AI` | 2024年にスタートした「生成AIパスポート」は、生成AIの基礎知識を体系的に学び、その理解度を証明するための認定試験です。私は、自社の生成AI研修を受講し、さらに業務で生成AIを活用する機会が増えた... |
@@ -60,7 +61,6 @@
 | 💸 [[下書き] 【Unbounded Consumption】AIの請求書の金額が跳ね上がる仕組み](../articles/202610-security-unbounded-consumption.md) | tech | `ai`, `security`, `llm`, `api` | AIのAPIキーを発行したとき、利用額の上限を設定しましたか。 2024年5月、クラウドセキュリティ企業のSysdig社が、LLMjacking と名付けた攻撃を報告しました。攻撃者は、脆弱性の残った... |
 | 🔐 [【セキュリティ】「Hacking OpenAI」から学ぶ、4つの攻撃ステップと現場で確かめたいこと](../articles/202610-security-openai-chain.md) | tech | `security`, `vulnerability`, `sso`, `imagemagick`, `ai` | 2026年9月、セキュリティ企業 Hacktron の研究者3人が Hacking OpenAI というレポートを公開しました。OpenAIのヘルプフォーラムに画像を1枚アップロードするところから始ま... |
 | 🔐 [【セキュリティ】「Hacking OpenAI」から学ぶ、AIで変わる攻撃のコスト](../articles/202610-security-hacking-openai.md) | idea | `ai`, `security`, `llm`, `vulnerability` | 2026年9月、セキュリティ企業 Hacktron の研究者3人が Hacking OpenAI というレポートを公開しました。OpenAIのバグバウンティ（脆弱性報奨金制度）の中で行った調査の報告で... |
-| 🛡️ [[下書き] 【セキュリティ】「個人情報が流出しました」のメールが届く時代に、私たちができる対策7選](../articles/202610-security-data-breach-users.md) | idea | `security`, `セキュリティ`, `個人情報`, `パスキー`, `ekyc` | 「お客様の個人情報が流出した可能性があります。申し訳ございません。」 こんなメールを受け取ったことはありませんか。私自身、ここしばらくのあいだに、いくつかの会社から「メールアドレスやお名前が流出しまし... |
 | 📦 [【サプライチェーン】その MCP サーバー、誰が作ったか知っていますか](../articles/202609-security-supply-chain.md) | tech | `ai`, `security`, `llm`, `mcp`, `supplychain` | AIエディタにMCPサーバーを追加するとき、READMEに書いてある設定をそのまま貼り付けたことはありませんか。 { "mcpServers": { "postmark": { "command": ... |
 | 🔓 [【Excessive Agency】AIエージェントに強い権限を与える前に知っておきたいリスク](../articles/202609-security-excessive-agency.md) | tech | `ai`, `security`, `llm`, `mcp`, `agent` | ファイルを書き換える、コマンドを実行する、メールを送る、データベースを操作する。便利なAIエージェントほど、こうした外に出す手段、平たく言えばAIエージェントに与えている強い権限を持っています。 20... |
 | 🪤 [【プロンプトインジェクション】AI時代の「見えない指示」の落とし穴](../articles/202609-prompt-injection.md) | tech | `ai`, `security`, `llm`, `mcp`, `prompt-injection` | AIエディタやチャットAIに、こんなお願いをしたことはありませんか。 > このURLの記事を読んで、要約して 私もやったことがあります。ある勉強会にて「その操作が情報漏洩の入り口になりうる」と聞いて、... |
