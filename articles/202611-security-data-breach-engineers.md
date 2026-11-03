@@ -3,7 +3,7 @@ title: "【セキュリティ】相次ぐ情報漏えいから考える、エン
 emoji: "🔐"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["security", "vulnerability", "セキュリティ", "個人情報", "legacy"]
-published: false
+published: true
 ---
 ![](/images/zenn_security_data_engineer.jpg)
 
