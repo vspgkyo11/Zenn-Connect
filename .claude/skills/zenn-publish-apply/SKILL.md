@@ -95,6 +95,8 @@ Mac をスリープさせず、ターミナルも閉じないこと。
 | `記事カテゴリーは単一選択です` | `--category` を1つにする |
 | 送信で止まる | reCAPTCHA の可能性。`--headed` で手動対応 |
 | 公開URLが 200 にならない | 予約公開の時刻前か Zenn の同期待ち。`published_at` と push 状況を確認 |
+| 「公開URLの反映を待機」が長い | 最大10分待つ。1分ごとに HTTP ステータスと経過秒数が出る。先に `git log origin/main -3` で `publish:` コミットが push 済みか確認し、済みなら Zenn 側の取り込み待ち。10分超えたら Zenn ダッシュボードで記事の状態を見る |
+| `published: true` だけ変えて commit / push を忘れた | スクリプトが未コミット・未 push を検出して commit / push する（公開済みなら git 工程を丸ごとスキップする旧挙動は修正済み） |
 
 ## 設定
 リポジトリ直下の `.env.zenn-publish`（git 管理外。雛形は `.env.zenn-publish.example`）で

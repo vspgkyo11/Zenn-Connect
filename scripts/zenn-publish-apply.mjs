@@ -222,8 +222,27 @@ async function publishArticle(article, { publishedAt, dryRun }) {
   if (!dryRun) git("pull", "--ff-only", "origin", CONFIG.branch);
 
   const current = readFrontMatter(article.file);
+  const rel = `articles/${article.slug}.md`;
   if (current.published && !publishedAt) {
-    log(`ℹ️  ${article.slug} は既に published: true です。git 工程はスキップします`);
+    // published: true でも、未コミットの変更や未 push のコミットが残っていれば公開されない。
+    // 「フラグだけ true にして commit/push を忘れた」状態を拾って完了させる。
+    const dirty = git("status", "--porcelain", "--", rel);
+    const unpushed = git("log", `origin/${CONFIG.branch}..HEAD`, "--oneline", "--", rel);
+    if (!dirty && !unpushed) {
+      log(`ℹ️  ${article.slug} は既に published: true で、commit / push も済んでいます。git 工程はスキップします`);
+      return;
+    }
+    log(`⚠️ ${article.slug} は published: true ですが、${dirty ? "未コミットの変更" : "未 push のコミット"}があります。続きを実行します`);
+    if (dryRun) {
+      log("🧪 [dry-run] commit / push する予定");
+      return;
+    }
+    if (dirty) {
+      git("add", rel);
+      git("commit", "-m", `publish: ${article.slug}`, "--", rel);
+      log(`✅ commit: publish: ${article.slug}`);
+    }
+    await pushWithRetry();
     return;
   }
 
@@ -241,38 +260,54 @@ async function publishArticle(article, { publishedAt, dryRun }) {
   }
 
   writeFileSync(article.file, text);
-  const rel = `articles/${article.slug}.md`;
   git("add", rel);
   git("commit", "-m", `publish: ${article.slug}`, "--", rel);
   log(`✅ commit: publish: ${article.slug}`);
 
+  await pushWithRetry();
+}
+
+async function pushWithRetry() {
   for (let i = 0, wait = 2000; ; i++, wait *= 2) {
     try {
       git("push", "origin", CONFIG.branch);
-      log(`🚀 git push origin ${CONFIG.branch} 完了`);
-      return;
+      break;
     } catch (e) {
       if (i >= 4) throw e;
       log(`⚠️ push 失敗。${wait / 1000}s 後に再試行 (${i + 1}/4)`);
       await sleep(wait);
     }
   }
+  // push が本当に届いたかを、ローカルの HEAD と origin の位置で確かめる
+  const head = git("rev-parse", "--short", "HEAD");
+  const remote = git("rev-parse", "--short", `origin/${CONFIG.branch}`);
+  if (head !== remote) fail(`push 後も HEAD(${head}) と origin/${CONFIG.branch}(${remote}) が一致しません`);
+  log(`🚀 git push origin ${CONFIG.branch} 完了 (${head})`);
 }
 
 async function waitForPublicUrl(url, timeoutMs = 10 * 60_000) {
-  log(`🌐 公開URLの反映を待機: ${url}`);
-  const deadline = Date.now() + timeoutMs;
+  log(`🌐 公開URLの反映を待機（最大 ${Math.round(timeoutMs / 60_000)} 分。Zenn が GitHub の push を取り込むまで数分かかることがあります）: ${url}`);
+  const started = Date.now();
+  const deadline = started + timeoutMs;
+  let lastLog = 0;
   while (Date.now() < deadline) {
+    let status = "接続エラー/タイムアウト";
     try {
-      const res = await fetch(url, { method: "GET", redirect: "follow" });
+      // 応答が返らないまま固まらないよう、1 回ごとに打ち切る
+      const res = await fetch(url, { method: "GET", redirect: "follow", signal: AbortSignal.timeout(15_000) });
       if (res.ok) {
         log("✅ 公開URLが 200 を返しました");
         return true;
       }
+      status = `HTTP ${res.status}`;
     } catch {}
+    if (Date.now() - lastLog >= 60_000) {
+      log(`⏳ まだ公開されていません（${status}、経過 ${Math.round((Date.now() - started) / 1000)} 秒）`);
+      lastLog = Date.now();
+    }
     await sleep(20_000);
   }
-  log("⚠️ 公開URLの反映を確認できませんでした（フォーム送信は続行します）");
+  log("⚠️ 公開URLの反映を確認できませんでした（フォーム送信は続行します）。Zenn のダッシュボードで記事の状態を確認してください");
   return false;
 }
 
