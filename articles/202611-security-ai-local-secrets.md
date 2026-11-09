@@ -3,7 +3,7 @@ title: "【セキュリティ】「学習されない設定」では足りない
 emoji: "🔐"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["security", "セキュリティ", "AI", "個人情報", "環境変数"]
-published: false
+published: true
 ---
 
 ![](/images/zenn_ai_local_secret.jpg)
